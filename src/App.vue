@@ -38,6 +38,7 @@
         LINE Analyzer
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <FilePicker/>
     </v-toolbar>
 
     <!-- コンテンツ -->
@@ -48,9 +49,12 @@
 </template>
 
 <script>
+import FilePicker from '@/components/FilePicker';
+
 export default {
   name: 'App',
   components: {
+    FilePicker,
   },
   data() {
     return {
