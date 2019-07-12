@@ -11,14 +11,20 @@
           return-object
         ></v-select>
       </v-flex>
+      <v-flex xs12>
+        <SpeakerTable v-if="selectedKey.value === 'speaker'"/>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import SpeakerTable from '@/components/tables/SpeakerTable';
+
 export default {
   name: 'TablePage',
   components: {
+    SpeakerTable,
   },
   data: () => ({
     selectedKey: { label: '発言者', value: 'speaker' },
