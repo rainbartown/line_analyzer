@@ -65,6 +65,24 @@ export default new Vuex.Store({
     talkName: '',
     messages: [],
     speakersData: {},
+    daysOfWeek: [
+      '日曜日',
+      '月曜日',
+      '火曜日',
+      '水曜日',
+      '木曜日',
+      '金曜日',
+      '土曜日',
+    ],
+    daysOfWeekData: {
+      日曜日: { name: '日曜日' },
+      月曜日: { name: '月曜日' },
+      火曜日: { name: '火曜日' },
+      水曜日: { name: '水曜日' },
+      木曜日: { name: '木曜日' },
+      金曜日: { name: '金曜日' },
+      土曜日: { name: '土曜日' },
+    },
   },
   getters: {
     isLoading(state) { return state.isLoading; },
@@ -72,6 +90,8 @@ export default new Vuex.Store({
     messages(state) { return state.messages; },
     speakers(state) { return Object.keys(state.speakersData); },
     speakersData(state) { return state.speakersData; },
+    daysOfWeek(state) { return state.daysOfWeek; },
+    daysOfWeekData(state) { return state.daysOfWeekData; },
   },
   mutations: {
     setLoading(state, loading) { state.isLoading = loading; },

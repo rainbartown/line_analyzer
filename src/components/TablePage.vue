@@ -13,6 +13,7 @@
       </v-flex>
       <v-flex xs12>
         <SpeakerTable v-if="selectedKey.value === 'speaker'"/>
+        <dayOfWeekTable v-if="selectedKey.value === 'dayOfWeek'"/>
       </v-flex>
     </v-layout>
   </v-container>
@@ -20,16 +21,19 @@
 
 <script>
 import SpeakerTable from '@/components/tables/SpeakerTable';
+import dayOfWeekTable from '@/components/tables/DayOfWeekTable';
 
 export default {
   name: 'TablePage',
   components: {
     SpeakerTable,
+    dayOfWeekTable,
   },
   data: () => ({
     selectedKey: { label: '発言者', value: 'speaker' },
     keys: [
       { label: '発言者', value: 'speaker' },
+      { label: '曜日', value: 'dayOfWeek' },
     ],
   }),
 };
