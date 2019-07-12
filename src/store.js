@@ -22,7 +22,7 @@ const readFile = file => (
 
 const loadMessages = async (text) => {
   const messages = [];
-  const speakerData = {};
+  const speakersData = {};
   const lines = text.split('\n');
   const talkNamePattern = /^\[LINE\] (.*)のトーク履歴/; // 1行目のトーク名 "[LINE] 〇〇のトーク履歴"
   const datePattern = /^20[0-9][0-9]\/[0-1][0-9]\/[0-3][0-9]\(.\)/; // 日付 "2019/01/01(火)"
@@ -51,11 +51,11 @@ const loadMessages = async (text) => {
         speaker,
         datetime: new Date(year, month - 1, dayOfMonth, hour, minute, 30, 0),
       });
-      if (!speakerData[speaker]) speakerData[speaker] = { name: speaker };
+      if (!speakersData[speaker]) speakersData[speaker] = { name: speaker };
     }
   });
 
-  return { talkName, messages, speakerData };
+  return { talkName, messages, speakersData };
 };
 
 
@@ -64,30 +64,30 @@ export default new Vuex.Store({
     isLoading: true,
     talkName: '',
     messages: [],
-    speakerData: {},
+    speakersData: {},
   },
   getters: {
     isLoading(state) { return state.isLoading; },
     talkName(state) { return state.talkName; },
     messages(state) { return state.messages; },
-    speakers(state) { return Object.keys(state.speakerData); },
-    speakerData(state) { return state.speakerData; },
+    speakers(state) { return Object.keys(state.speakersData); },
+    speakersData(state) { return state.speakersData; },
   },
   mutations: {
     setLoading(state, loading) { state.isLoading = loading; },
     setTalkName(state, talkName) { state.talkName = talkName; },
     setMessages(state, messages) { state.messages = messages; },
-    setSpeakerData(state, speakerData) { state.speakerData = speakerData; },
+    setSpeakersData(state, speakersData) { state.speakersData = speakersData; },
   },
   actions: {
     loading({ commit }, loading) { commit('setLoading', loading); },
     async read({ commit }, file) {
       try {
         const text = await readFile(file);
-        const { talkName, messages, speakerData } = await loadMessages(text);
+        const { talkName, messages, speakersData } = await loadMessages(text);
         commit('setTalkName', talkName);
         commit('setMessages', messages);
-        commit('setSpeakerData', speakerData);
+        commit('setSpeakersData', speakersData);
       } catch (err) {
         // console.error(err);
       }
