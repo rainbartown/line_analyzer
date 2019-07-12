@@ -2,10 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import HomePage from '@/components/HomePage';
 import TablePage from '@/components/TablePage';
+import ChartPage from '@/components/ChartPage';
 
 Vue.use(Router);
-
-const ChartPage = { template: '<div>ChartPage</div>' };
 
 export default new Router({
   routes: [
