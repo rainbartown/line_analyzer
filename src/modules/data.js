@@ -1,3 +1,5 @@
+import DateTimeUnit from '@/modules/date-time-unit';
+
 /**
  * キーごとのメッセージ数を数える関数
  * @param {Object} messages メッセージリスト
@@ -41,7 +43,26 @@ const sortCounts = (counts, length = -1) => {
 };
 
 
+/**
+ * 時系列のシーケンスを生成
+ * startDateTimeからendDateTimeまでunit単位のシーケンス
+ * @param {Date} startDateTime 開始日時
+ * @param {Date} endDateTime 終了日時
+ * @param {string} unit 時間単位（'year'|'month'|'day')
+ */
+const generateTimeSequence = (startDateTime, endDateTime, unit) => {
+  const sequence = [];
+  const start = new DateTimeUnit(startDateTime, unit);
+  const end = new DateTimeUnit(endDateTime, unit);
+  while (start.datetime <= end.datetime) {
+    sequence.push(new Date(start.datetime));
+    start.addUnit();
+  }
+  return sequence;
+};
+
 export {
   countMessage,
   sortCounts,
+  generateTimeSequence,
 };
