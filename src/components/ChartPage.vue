@@ -11,6 +11,11 @@
           return-object
         ></v-select>
       </v-flex>
+    </v-layout>
+    <v-layout
+      v-if="hasData"
+      wrap
+      >
       <v-flex xs12>
         <SpeakerPieChart v-if="selectedKey.value === 'speaker'"/>
       </v-flex>
@@ -19,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import SpeakerPieChart from '@/components/charts/SpeakerPieChart';
 
 export default {
@@ -32,5 +38,13 @@ export default {
       { label: '発言者', value: 'speaker' },
     ],
   }),
+  computed: {
+    ...mapGetters([
+      'messages',
+    ]),
+    hasData() {
+      return (this.messages.length > 0);
+    },
+  },
 };
 </script>
