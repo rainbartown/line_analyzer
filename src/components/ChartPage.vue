@@ -11,14 +11,20 @@
           return-object
         ></v-select>
       </v-flex>
+      <v-flex xs12>
+        <SpeakerPieChart v-if="selectedKey.value === 'speaker'"/>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import SpeakerPieChart from '@/components/charts/SpeakerPieChart';
+
 export default {
   name: 'ChartPage',
   components: {
+    SpeakerPieChart,
   },
   data: () => ({
     selectedKey: { label: '発言者', value: 'speaker' },

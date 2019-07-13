@@ -16,6 +16,32 @@ const countMessage = (messages, keys, keyFn) => {
   return counts;
 };
 
+
+/**
+ * メッセージ数で降順にソートし、
+ * 下位をその他としてまとめて長さnのリストを作成
+ * @param {Object[]} counts キーごとのメッセージ数のリスト
+ * @param {string} counts.name キーの名前
+ * @param {number} counts.count メッセージ数
+ * @param {number} [length = -1] 出力データリストの最大長（その他を含む）
+ *   n < 0のときはその他をしてまとめない
+ *   （デフォルト: -1）
+ * @returns {{name : string, count : number}[]} キーごとのメッセージ数のリスト
+ */
+const sortCounts = (counts, length = -1) => {
+  const sortedCounts = counts.sort((a, b) => b.count - a.count);
+  if (length <= 0 || sortedCounts.length <= length) return sortedCounts;
+  const tops = sortedCounts.slice(0, length - 1);
+  const othersCount = sortedCounts
+    .slice(length - 1)
+    .map(el => el.count)
+    .reduce((sum, count) => (sum + count));
+  tops.push({ name: 'その他', count: othersCount });
+  return tops;
+};
+
+
 export {
   countMessage,
+  sortCounts,
 };
