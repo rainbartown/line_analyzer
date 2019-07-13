@@ -45,7 +45,6 @@ export default {
     ...mapGetters([
       'messages',
       'speakers',
-      'speakersData',
     ]),
     items() {
       const counts = countMessage(this.messages, this.speakers, message => message.speaker);
