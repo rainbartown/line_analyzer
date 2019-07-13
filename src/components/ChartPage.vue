@@ -18,6 +18,7 @@
       >
       <v-flex xs12>
         <SpeakerPieChart v-if="selectedKey.value === 'speaker'"/>
+        <DayOfWeekBarChart v-if="selectedKey.value === 'dayOfWeek'"/>
       </v-flex>
     </v-layout>
   </v-container>
@@ -26,16 +27,19 @@
 <script>
 import { mapGetters } from 'vuex';
 import SpeakerPieChart from '@/components/charts/SpeakerPieChart';
+import DayOfWeekBarChart from '@/components/charts/DayOfWeekBarChart';
 
 export default {
   name: 'ChartPage',
   components: {
     SpeakerPieChart,
+    DayOfWeekBarChart,
   },
   data: () => ({
     selectedKey: { label: '発言者', value: 'speaker' },
     keys: [
       { label: '発言者', value: 'speaker' },
+      { label: '曜日', value: 'dayOfWeek' },
     ],
   }),
   computed: {
