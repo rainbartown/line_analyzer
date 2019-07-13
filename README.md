@@ -3,6 +3,10 @@
 LINEのトーク履歴を解析
 
 
+## Webページ
+https://gandats.github.io/line_analyzer/
+
+
 ## 使い方
 
 1. LINEアプリでトーク履歴をエクスポートし端末やクラウドに保存
