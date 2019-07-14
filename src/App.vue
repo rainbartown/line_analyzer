@@ -35,7 +35,7 @@
         @click="drawer =! drawer"
       ></v-toolbar-side-icon>
       <v-toolbar-title class="headline white--text font-weight-regular">
-        LINE Analyzer
+        {{ title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <FilePicker/>
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import FilePicker from '@/components/FilePicker';
 
 export default {
@@ -77,6 +78,15 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    ...mapGetters([
+      'talkName',
+    ]),
+    title() {
+      if (this.talkName.length > 0) return `${this.talkName}のトーク`;
+      return 'LINE Analyzer';
+    },
   },
 };
 </script>
