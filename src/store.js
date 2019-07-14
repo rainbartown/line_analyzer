@@ -65,6 +65,14 @@ export default new Vuex.Store({
     talkName: '',
     messages: [],
     speakersData: {},
+    hours: [...Array(24).keys()]
+      .map(hour => `${`0${hour}`.slice(-2)}時台`),
+    hoursData: [...Array(24).keys()]
+      .map(hour => `${`0${hour}`.slice(-2)}時台`)
+      .reduce((data, hour) => {
+        data[hour] = { name: hour }; // eslint-disable-line no-param-reassign
+        return data;
+      }, {}),
     daysOfWeek: [
       '日曜日',
       '月曜日',
@@ -90,6 +98,8 @@ export default new Vuex.Store({
     messages(state) { return state.messages; },
     speakers(state) { return Object.keys(state.speakersData); },
     speakersData(state) { return state.speakersData; },
+    hours(state) { return state.hours; },
+    hoursData(state) { return state.hoursData; },
     daysOfWeek(state) { return state.daysOfWeek; },
     daysOfWeekData(state) { return state.daysOfWeekData; },
   },
