@@ -1,4 +1,4 @@
-import DateTimeUnit from '@/modules/date-time-unit';
+import DateTimeUnit from '@/assets/js/date-time-unit';
 
 /**
  * キーごとのメッセージ数を数える関数

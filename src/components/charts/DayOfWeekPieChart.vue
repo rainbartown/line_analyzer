@@ -5,8 +5,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import palette from 'google-palette';
-import PieChart from '@/components/charts/base/PieChart';
-import { countMessage } from '@/modules/data';
+import PieChart from '@/components/charts/base/PieChart.vue';
+import { countMessage } from '@/assets/js/data';
 
 export default {
   name: 'DayOfWeekPieChart',

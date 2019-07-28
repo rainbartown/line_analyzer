@@ -23,9 +23,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import Color from 'color';
-import LineChart from '@/components/charts/base/LineChart';
-import { generateTimeSequence } from '@/modules/data';
-import DateTimeUnit from '@/modules/date-time-unit';
+import LineChart from '@/components/charts/base/LineChart.vue';
+import { generateTimeSequence } from '@/assets/js/data';
+import DateTimeUnit from '@/assets/js/date-time-unit';
 
 /**
  * 時系列データを作成
@@ -74,8 +74,8 @@ export default {
           label: '発言回数',
           data: generateTimeSeriesData(this.messages, this.selectedUnit.value),
           lineTension: 0,
-          borderColor: Color(this.$vuetify.theme.primary).darken(0.5).string(),
-          backgroundColor: Color(this.$vuetify.theme.primary).alpha(0.1).string(),
+          borderColor: Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string(),
+          backgroundColor: Color(this.$vuetify.theme.currentTheme.primary).alpha(0.1).string(),
         }],
       };
     },

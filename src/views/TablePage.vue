@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import SpeakerTable from '@/components/tables/SpeakerTable';
-import HourTable from '@/components/tables/HourTable';
-import dayOfWeekTable from '@/components/tables/DayOfWeekTable';
+import SpeakerTable from '@/components/tables/SpeakerTable.vue';
+import HourTable from '@/components/tables/HourTable.vue';
+import dayOfWeekTable from '@/components/tables/DayOfWeekTable.vue';
 
 export default {
   name: 'TablePage',

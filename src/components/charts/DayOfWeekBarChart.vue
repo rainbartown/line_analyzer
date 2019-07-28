@@ -5,8 +5,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import Color from 'color';
-import BarChart from '@/components/charts/base/BarChart';
-import { countMessage } from '@/modules/data';
+import BarChart from '@/components/charts/base/BarChart.vue';
+import { countMessage } from '@/assets/js/data';
 
 export default {
   name: 'DayOfWeekBarChart',
@@ -27,7 +27,7 @@ export default {
         datasets: [{
           label: '発言回数',
           data: counts.map(el => el.count),
-          backgroundColor: Color(this.$vuetify.theme.primary).darken(0.5).string(),
+          backgroundColor: Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string(),
         }],
       };
     },

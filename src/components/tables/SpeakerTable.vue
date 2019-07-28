@@ -1,9 +1,11 @@
 <template>
   <v-data-table
-    :pagination.sync="pagination"
     :headers="headers"
     :items="items"
-    :hide-actions="true"
+    :items-per-page=-1
+    sort-by="count"
+    sort-desc
+    hide-default-footer
     no-data-text="データがありません"
   >
     <template v-slot:items="props">
@@ -15,16 +17,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { countMessage } from '@/modules/data';
+import { countMessage } from '@/assets/js/data';
 
 export default {
   name: 'SpeakerTable',
   data: () => ({
-    pagination: {
-      sortBy: 'count',
-      descending: true,
-      rowsPerPage: -1,
-    },
     headers: [
       {
         text: '名前',

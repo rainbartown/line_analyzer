@@ -8,38 +8,38 @@
       clipped
       width=200
     >
-      <v-list color="blue">
-        <v-list-tile
+      <v-list>
+        <v-list-item
           class="black--text"
           v-for="page in pages"
           :key="page.title"
           :to="page.path"
         >
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-icon>{{ page.action }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>{{ page.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ page.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar
+    <v-app-bar
       fixed
       app
       clipped-left
       color="primary"
     >
-      <v-toolbar-side-icon
+      <v-app-bar-nav-icon
         class="white--text"
         @click="drawer =! drawer"
-      ></v-toolbar-side-icon>
+      ></v-app-bar-nav-icon>
       <v-toolbar-title class="headline white--text font-weight-regular">
         {{ title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <FilePicker/>
-    </v-toolbar>
+    </v-app-bar>
 
     <!-- コンテンツ -->
     <v-content>
@@ -50,7 +50,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import FilePicker from '@/components/FilePicker';
+import FilePicker from '@/components/FilePicker.vue';
 
 export default {
   name: 'App',
@@ -62,17 +62,17 @@ export default {
       drawer: null,
       pages: [
         {
-          action: 'home',
+          action: 'mdi-home',
           title: 'Home',
           path: '/',
         },
         {
-          action: 'view_list',
+          action: 'mdi-table',
           title: 'Table',
           path: '/Table',
         },
         {
-          action: 'timeline',
+          action: 'mdi-chart-line',
           title: 'Chart',
           path: '/Chart',
         },

@@ -28,10 +28,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import SpeakerPieChart from '@/components/charts/SpeakerPieChart';
-import HourBarChart from '@/components/charts/HourBarChart';
-import DayOfWeekBarChart from '@/components/charts/DayOfWeekBarChart';
-import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart';
+import SpeakerPieChart from '@/components/charts/SpeakerPieChart.vue';
+import HourBarChart from '@/components/charts/HourBarChart.vue';
+import DayOfWeekBarChart from '@/components/charts/DayOfWeekBarChart.vue';
+import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart.vue';
 
 export default {
   name: 'ChartPage',

@@ -1,10 +1,9 @@
 <template>
   <v-data-table
-    :pagination.sync="pagination"
     :headers="headers"
     :items="items"
-    :hide-actions="true"
-    disable-initial-sort
+    :items-per-page=-1
+    hide-default-footer
     no-data-text="データがありません"
   >
     <template v-slot:items="props">
@@ -16,14 +15,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { countMessage } from '@/modules/data';
+import { countMessage } from '@/assets/js/data';
 
 export default {
   name: 'HourTable',
   data: () => ({
-    pagination: {
-      rowsPerPage: -1,
-    },
     headers: [
       {
         text: '時刻',

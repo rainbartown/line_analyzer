@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HomePage from '@/components/HomePage';
-import TablePage from '@/components/TablePage';
-import ChartPage from '@/components/ChartPage';
+import HomePage from '@/views/HomePage.vue';
+import TablePage from '@/views/TablePage.vue';
+import ChartPage from '@/views/ChartPage.vue';
 
 Vue.use(Router);
 
