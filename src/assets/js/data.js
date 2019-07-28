@@ -1,5 +1,6 @@
 import DateTimeUnit from '@/assets/js/date-time-unit';
 
+
 /**
  * キーごとのメッセージ数を数える関数
  * @param {Object} messages メッセージリスト

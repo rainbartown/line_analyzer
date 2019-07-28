@@ -26,6 +26,7 @@ const readFile = file => (
 /* eslint-enable max-len */
 const loadFile = async (text) => {
   const lines = text.split('\n');
+  const history = [];
   const messages = [];
   const speakersData = {};
 
@@ -38,26 +39,68 @@ const loadFile = async (text) => {
   // メッセージ
   const datePattern = /^20[0-9][0-9]\/[0-1][0-9]\/[0-3][0-9]\(.\)/; // 日付 "2019/01/01(火)"
   const timePattern = /^[0-2][0-9]:[0-5][0-9]$/; // 時刻 "00:00"
+  const changeTalkNamePattern = /^(.*)がグループ名を(.*)に変更しました。/; // グループ名の変更
   let year;
   let month;
   let dayOfMonth;
   lines.forEach((line) => {
     const col = line.split('\t');
-    if (col.length === 1 && col[0].match(datePattern)) { // 日付 "2019/01/01(火)"
-      [year, month, dayOfMonth] = col[0].slice(0, 9).split('/').map(el => parseInt(el, 10));
-    } else if (col.length === 3 && col[0].match(timePattern)) { // 発言 "00:00\t太郎\tこんにちは"
-      const speaker = col[1]; // eslint-disable-line prefer-destructuring
-      const [hour, minute] = col[0].split(':').map(el => parseInt(el, 10));
-      // メッセージと発言者を追加
-      messages.push({
-        speaker,
-        datetime: new Date(year, month - 1, dayOfMonth, hour, minute, 30, 0),
-      });
-      if (!speakersData[speaker]) speakersData[speaker] = { name: speaker };
+    switch (col.length) {
+      case 1: // 日付 "2019/01/01(火)"
+        if (col[0].match(datePattern)) { // 日付 "2019/01/01(火)"
+          [year, month, dayOfMonth] = col[0].slice(0, 9).split('/').map(el => parseInt(el, 10));
+        }
+        break;
+      case 2: // グループイベント
+        if (col[0].match(timePattern)) { // 時刻 "00:00"
+          const [hour, minute] = col[0].split(':').map(el => parseInt(el, 10));
+          if (col[1].match(changeTalkNamePattern)) { // グループ名の変更
+            const [, actor, newTalkName] = col[1].match(changeTalkNamePattern);
+            history.push({
+              type: 'CHANGE_TALK_NAME',
+              datetime: new Date(year, month - 1, dayOfMonth, hour, minute, 30, 0),
+              actor,
+              newTalkName,
+            });
+          }
+        }
+        break;
+      case 3: // 発言 "00:00\t太郎\tこんにちは"
+        if (col[0].match(timePattern)) { // 時刻 "00:00"
+          const [hour, minute] = col[0].split(':').map(el => parseInt(el, 10));
+          const speaker = col[1]; // eslint-disable-line prefer-destructuring
+          messages.push({
+            speaker,
+            datetime: new Date(year, month - 1, dayOfMonth, hour, minute, 30, 0),
+          });
+          if (!speakersData[speaker]) speakersData[speaker] = { name: speaker };
+        }
+        break;
+      default:
+        //
     }
   });
 
-  return { talkName, messages, speakersData };
+  // 履歴の始まりと終わりをヒストリーに追加
+  if (messages.length > 0) {
+    // 履歴の始まり
+    history.unshift({
+      type: 'START_TALK',
+      datetime: messages[0].datetime,
+    });
+    // 履歴の終わり
+    history.push({
+      type: 'END_TALK',
+      datetime: messages[messages.length - 1].datetime,
+    });
+  }
+
+  return {
+    talkName,
+    history,
+    messages,
+    speakersData,
+  };
 };
 
 

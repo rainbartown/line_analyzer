@@ -9,6 +9,7 @@ export default new Vuex.Store({
   state: {
     isLoading: true,
     talkName: '',
+    history: [],
     messages: [],
     speakersData: {},
     hours: [...Array(24).keys()]
@@ -41,6 +42,7 @@ export default new Vuex.Store({
   getters: {
     isLoading(state) { return state.isLoading; },
     talkName(state) { return state.talkName; },
+    history(state) { return state.history; },
     messages(state) { return state.messages; },
     speakers(state) { return Object.keys(state.speakersData); },
     speakersData(state) { return state.speakersData; },
@@ -52,6 +54,7 @@ export default new Vuex.Store({
   mutations: {
     setLoading(state, loading) { state.isLoading = loading; },
     setTalkName(state, talkName) { state.talkName = talkName; },
+    setHistory(state, history) { state.history = history; },
     setMessages(state, messages) { state.messages = messages; },
     setSpeakersData(state, speakersData) { state.speakersData = speakersData; },
   },
@@ -60,8 +63,14 @@ export default new Vuex.Store({
     async read({ commit }, file) {
       try {
         const text = await readFile(file);
-        const { talkName, messages, speakersData } = await loadFile(text);
+        const {
+          talkName,
+          history,
+          messages,
+          speakersData,
+        } = await loadFile(text);
         commit('setTalkName', talkName);
+        commit('setHistory', history);
         commit('setMessages', messages);
         commit('setSpeakersData', speakersData);
       } catch (err) {
