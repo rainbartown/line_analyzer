@@ -46,4 +46,4 @@ class DateTimeUnit {
 }
 
 
-export default DateTimeUnit;
+export { DateTimeUnit };

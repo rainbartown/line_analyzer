@@ -1,4 +1,4 @@
-import DateTimeUnit from '@/assets/js/date-time-unit';
+import { DateTimeUnit } from '@/assets/js/date-time';
 
 
 /**

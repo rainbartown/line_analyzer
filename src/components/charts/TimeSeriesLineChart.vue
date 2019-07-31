@@ -25,7 +25,7 @@ import { mapGetters } from 'vuex';
 import Color from 'color';
 import LineChart from '@/components/charts/base/LineChart.vue';
 import { generateTimeSequence } from '@/assets/js/data';
-import DateTimeUnit from '@/assets/js/date-time-unit';
+import { DateTimeUnit } from '@/assets/js/date-time';
 
 /**
  * 時系列データを作成
