@@ -69,12 +69,12 @@ export default {
         {
           action: 'mdi-table',
           title: 'Table',
-          path: '/Table',
+          path: '/table',
         },
         {
           action: 'mdi-chart-line',
           title: 'Chart',
-          path: '/Chart',
+          path: '/chart',
         },
       ],
     };
