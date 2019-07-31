@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isLoading: true,
+    loading: true,
     talkName: '',
     history: [],
     messages: [],
@@ -40,7 +40,7 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    isLoading(state) { return state.isLoading; },
+    loading(state) { return state.loading; },
     talkName(state) { return state.talkName; },
     history(state) { return state.history; },
     messages(state) { return state.messages; },
@@ -52,7 +52,7 @@ export default new Vuex.Store({
     daysOfWeekData(state) { return state.daysOfWeekData; },
   },
   mutations: {
-    setLoading(state, loading) { state.isLoading = loading; },
+    setLoading(state, loading) { state.loading = loading; },
     setTalkName(state, talkName) { state.talkName = talkName; },
     setHistory(state, history) { state.history = history; },
     setMessages(state, messages) { state.messages = messages; },
