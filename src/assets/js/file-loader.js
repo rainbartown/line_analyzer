@@ -48,7 +48,7 @@ const loadFile = async (text) => {
     switch (col.length) {
       case 1: // 日付 "2019/01/01(火)"
         if (col[0].match(datePattern)) { // 日付 "2019/01/01(火)"
-          [year, month, dayOfMonth] = col[0].slice(0, 9).split('/').map(el => parseInt(el, 10));
+          [year, month, dayOfMonth] = col[0].slice(0, 10).split('/').map(el => parseInt(el, 10));
         }
         break;
       case 2: // グループイベント
