@@ -41,6 +41,7 @@ export default new Vuex.Store({
   },
   getters: {
     loading(state) { return state.loading; },
+    hasData(state) { return state.messages.length > 0; },
     talkName(state) { return state.talkName; },
     history(state) { return state.history; },
     messages(state) { return state.messages; },

@@ -1,4 +1,23 @@
 /**
+ * Date型をフォーマットする関数
+ * @param {Date} datetime 日時
+ * @param {string} format フォーマット
+ * @returns {string} フォーマットされた文字列
+ */
+const formatDateTime = (datetime, format) => {
+  let formated = format;
+  formated = formated.replace(/yyyy/g, datetime.getFullYear());
+  formated = formated.replace(/MM/g, `0${datetime.getMonth() + 1}`.slice(-2));
+  formated = formated.replace(/dd/g, `0${datetime.getDate()}`.slice(-2));
+  formated = formated.replace(/HH/g, `0${datetime.getHours()}`.slice(-2));
+  formated = formated.replace(/mm/g, `0${datetime.getMinutes()}`.slice(-2));
+  formated = formated.replace(/ss/g, `0${datetime.getSeconds()}`.slice(-2));
+  formated = formated.replace(/SSS/g, `0${datetime.getMilliseconds()}`.slice(-2));
+  return formated;
+};
+
+
+/**
  * 時系列データをまとめるためのクラス
  */
 class DateTimeUnit {
@@ -46,4 +65,4 @@ class DateTimeUnit {
 }
 
 
-export { DateTimeUnit };
+export { formatDateTime, DateTimeUnit };

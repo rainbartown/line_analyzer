@@ -67,6 +67,11 @@ export default {
           path: '/',
         },
         {
+          action: 'mdi-calendar-clock',
+          title: 'History',
+          path: '/history',
+        },
+        {
           action: 'mdi-table',
           title: 'Table',
           path: '/table',

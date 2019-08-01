@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import HomePage from '@/views/HomePage.vue';
+import HistoryPage from '@/views/HistoryPage.vue';
 import TablePage from '@/views/TablePage.vue';
 import ChartPage from '@/views/ChartPage.vue';
 
@@ -12,6 +13,11 @@ export default new Router({
       path: '/',
       name: 'HomePage',
       component: HomePage,
+    },
+    {
+      path: '/history',
+      name: 'HistoryPage',
+      component: HistoryPage,
     },
     {
       path: '/table',
