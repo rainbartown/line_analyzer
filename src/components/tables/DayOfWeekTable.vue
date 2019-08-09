@@ -2,9 +2,10 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :items-per-page=-1
+    disable-pagination
     hide-default-footer
     no-data-text="データがありません"
+    :mobile-breakpoint=0
   >
     <template v-slot:items="props">
       <td style="text-align: center">{{ props.item.name }}</td>
@@ -26,13 +27,14 @@ export default {
         value: 'name',
         sortable: false,
         align: 'center',
+        class: 'grey lighten-2',
       },
       {
         text: '発言回数',
         value: 'count',
         sortable: true,
-        width: '20%',
         align: 'center',
+        class: 'grey lighten-2',
       },
     ],
   }),

@@ -1,18 +1,17 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="items"
-    :items-per-page=-1
-    sort-by="count"
-    sort-desc
-    hide-default-footer
-    no-data-text="データがありません"
-  >
-    <template v-slot:items="props">
-      <td style="text-align: center">{{ props.item.name }}</td>
-      <td style="text-align: right">{{ props.item.count }}</td>
-    </template>
-  </v-data-table>
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      sort-by="count"
+      sort-desc
+      hide-default-footer
+      disable-pagination
+      no-data-text="データがありません"
+      :mobile-breakpoint=0
+    >
+    </v-data-table>
+  </div>
 </template>
 
 <script>
@@ -28,13 +27,14 @@ export default {
         value: 'name',
         sortable: true,
         align: 'center',
+        class: 'grey lighten-2',
       },
       {
         text: '発言回数',
         value: 'count',
         sortable: true,
-        width: '20%',
         align: 'center',
+        class: 'grey lighten-2',
       },
     ],
   }),
@@ -45,7 +45,7 @@ export default {
     ]),
     items() {
       const counts = countMessage(this.messages, this.speakers, message => message.speaker);
-      return Object.entries(counts).map(([speaker, count]) => ({ name: speaker, count }));
+      return Object.entries(counts).map(([name, count]) => ({ name, count }));
     },
   },
 };

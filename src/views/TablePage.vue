@@ -13,8 +13,8 @@
       </v-flex>
       <v-flex xs12>
         <SpeakerTable v-if="selectedKey.value === 'speaker'"/>
-        <HourTable v-if="selectedKey.value === 'hour'"/>
-        <dayOfWeekTable v-if="selectedKey.value === 'dayOfWeek'"/>
+        <HourTable v-else-if="selectedKey.value === 'hour'"/>
+        <dayOfWeekTable v-else-if="selectedKey.value === 'dayOfWeek'"/>
       </v-flex>
     </v-layout>
   </v-container>
