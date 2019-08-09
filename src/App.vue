@@ -14,6 +14,7 @@
           v-for="page in pages"
           :key="page.title"
           :to="page.path"
+          :class="page.class"
         >
           <v-list-item-action>
             <v-icon>{{ page.action }}</v-icon>
@@ -86,10 +87,13 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'hasData',
       'talkName',
     ]),
     title() {
-      if (this.talkName.length > 0) return `${this.talkName}のトーク`;
+      if (this.hasData) {
+        return this.talkName;
+      }
       return 'LINE Analyzer';
     },
   },

@@ -1,19 +1,13 @@
 <template>
   <v-container>
-    <v-layout
-      v-if="hasData"
-      wrap
-    >
+    <v-layout wrap>
       <v-flex>
         <h1 class="title font-weight-bold text-center">
           {{ talkName }}の歴史
         </h1>
       </v-flex>
     </v-layout>
-    <v-layout
-      v-if="hasData"
-      wrap
-    >
+    <v-layout wrap>
       <v-flex xs12>
         <v-timeline dense>
           <v-timeline-item
@@ -80,7 +74,6 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      'hasData',
       'talkName',
       'history',
     ]),

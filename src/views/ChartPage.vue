@@ -12,10 +12,7 @@
         ></v-select>
       </v-flex>
     </v-layout>
-    <v-layout
-      v-if="hasData"
-      wrap
-      >
+    <v-layout wrap>
       <v-flex xs12>
         <SpeakerPieChart v-if="selectedKey.value === 'speaker'"/>
         <HourBarChart v-if="selectedKey.value === 'hour'"/>
@@ -54,9 +51,6 @@ export default {
     ...mapGetters([
       'messages',
     ]),
-    hasData() {
-      return (this.messages.length > 0);
-    },
   },
 };
 </script>
