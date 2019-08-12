@@ -8,13 +8,13 @@
       clipped
       width=200
     >
-      <v-list>
+      <v-list flat>
         <v-list-item
-          class="black--text"
           v-for="page in pages"
           :key="page.title"
           :to="page.path"
-          :class="page.class"
+          :disabled="page.disabled"
+          active-class="primary--text text--darken-2"
         >
           <v-list-item-action>
             <v-icon>{{ page.action }}</v-icon>
@@ -61,33 +61,12 @@ export default {
   data() {
     return {
       drawer: null,
-      pages: [
-        {
-          action: 'mdi-home',
-          title: 'Home',
-          path: '/',
-        },
-        {
-          action: 'mdi-calendar-clock',
-          title: 'History',
-          path: '/history',
-        },
-        {
-          action: 'mdi-table',
-          title: 'Table',
-          path: '/table',
-        },
-        {
-          action: 'mdi-chart-line',
-          title: 'Chart',
-          path: '/chart',
-        },
-      ],
     };
   },
   computed: {
     ...mapGetters([
       'hasData',
+      'showNavIconBadge',
       'talkName',
     ]),
     title() {
@@ -96,9 +75,47 @@ export default {
       }
       return 'LINE Analyzer';
     },
+    pages() {
+      return [
+        {
+          action: 'mdi-home',
+          title: 'Home',
+          path: '/',
+          disabled: false,
+        },
+        {
+          action: 'mdi-calendar-clock',
+          title: 'History',
+          path: '/history',
+          disabled: !this.hasData,
+        },
+        {
+          action: 'mdi-table',
+          title: 'Table',
+          path: '/table',
+          disabled: !this.hasData,
+        },
+        {
+          action: 'mdi-chart-line',
+          title: 'Chart',
+          path: '/chart',
+          disabled: !this.hasData,
+        },
+      ];
+    },
+  },
+  methods: {
+    onClickNavIcon() {
+      this.drawer = !this.drawer;
+      this.showNavIconBadge(false);
+    },
+  },
+  watch: {
+    hasData(val) {
+      if (val) {
+        this.drawer = true;
+      }
+    },
   },
 };
 </script>
-
-<style scoped>
-</style>
