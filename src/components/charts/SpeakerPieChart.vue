@@ -20,15 +20,15 @@ export default {
     ]),
     chartData() {
       const counts = sortCounts(
-        Object.entries(countMessage(this.messages, this.speakers, message => message.speaker))
+        Object.entries(countMessage(this.messages, this.speakers, (message) => message.speaker))
           .map(([name, count]) => ({ name, count })),
         10,
       );
       return {
-        labels: counts.map(el => el.name),
+        labels: counts.map((el) => el.name),
         datasets: [{
-          data: counts.map(el => el.count),
-          backgroundColor: palette('tol-rainbow', counts.length, -1).reverse().map(hex => `#${hex}`),
+          data: counts.map((el) => el.count),
+          backgroundColor: palette('tol-rainbow', counts.length, -1).reverse().map((hex) => `#${hex}`),
         }],
       };
     },

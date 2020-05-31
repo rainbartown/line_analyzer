@@ -20,13 +20,13 @@ export default {
     ]),
     chartData() {
       const counts = Object.entries(countMessage(this.messages, this.hours,
-        message => this.hours[message.datetime.getHours()]))
+        (message) => this.hours[message.datetime.getHours()]))
         .map(([name, count]) => ({ name, count }));
       return {
-        labels: counts.map(el => el.name),
+        labels: counts.map((el) => el.name),
         datasets: [{
           label: '発言回数',
-          data: counts.map(el => el.count),
+          data: counts.map((el) => el.count),
           backgroundColor: Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string(),
         }],
       };

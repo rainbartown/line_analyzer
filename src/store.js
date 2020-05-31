@@ -13,9 +13,9 @@ export default new Vuex.Store({
     messages: [],
     speakersData: {},
     hours: [...Array(24).keys()]
-      .map(hour => `${`0${hour}`.slice(-2)}時台`),
+      .map((hour) => `${`0${hour}`.slice(-2)}時台`),
     hoursData: [...Array(24).keys()]
-      .map(hour => `${`0${hour}`.slice(-2)}時台`)
+      .map((hour) => `${`0${hour}`.slice(-2)}時台`)
       .reduce((data, hour) => {
         data[hour] = { name: hour }; // eslint-disable-line no-param-reassign
         return data;

@@ -37,7 +37,7 @@ const sortCounts = (counts, length = -1) => {
   const tops = sortedCounts.slice(0, length - 1);
   const othersCount = sortedCounts
     .slice(length - 1)
-    .map(el => el.count)
+    .map((el) => el.count)
     .reduce((sum, count) => (sum + count));
   tops.push({ name: 'その他', count: othersCount });
   return tops;

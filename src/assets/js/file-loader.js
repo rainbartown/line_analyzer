@@ -3,7 +3,7 @@
  * @param {string} file トークファイル名
  * @returns {string} トークファイルの中身
  */
-const readFile = file => (
+const readFile = (file) => (
   new Promise((resolve, reject) => {
     // ファイルが選択されていなければエラー
     if (file === undefined) reject(new Error('ファイルが選択されていません'));
@@ -48,12 +48,12 @@ const loadFile = async (text) => {
     switch (col.length) {
       case 1: // 日付 "2019/01/01(火)"
         if (col[0].match(datePattern)) { // 日付 "2019/01/01(火)"
-          [year, month, dayOfMonth] = col[0].slice(0, 10).split('/').map(el => parseInt(el, 10));
+          [year, month, dayOfMonth] = col[0].slice(0, 10).split('/').map((el) => parseInt(el, 10));
         }
         break;
       case 2: // グループイベント
         if (col[0].match(timePattern)) { // 時刻 "00:00"
-          const [hour, minute] = col[0].split(':').map(el => parseInt(el, 10));
+          const [hour, minute] = col[0].split(':').map((el) => parseInt(el, 10));
           if (col[1].match(changeTalkNamePattern)) { // グループ名の変更
             const [, actor, newTalkName] = col[1].match(changeTalkNamePattern);
             history.push({
@@ -67,7 +67,7 @@ const loadFile = async (text) => {
         break;
       case 3: // 発言 "00:00\t太郎\tこんにちは"
         if (col[0].match(timePattern)) { // 時刻 "00:00"
-          const [hour, minute] = col[0].split(':').map(el => parseInt(el, 10));
+          const [hour, minute] = col[0].split(':').map((el) => parseInt(el, 10));
           const speaker = col[1]; // eslint-disable-line prefer-destructuring
           messages.push({
             speaker,

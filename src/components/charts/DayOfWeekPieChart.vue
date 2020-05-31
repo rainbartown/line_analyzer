@@ -20,13 +20,13 @@ export default {
     ]),
     chartData() {
       const counts = Object.entries(countMessage(this.messages, this.daysOfWeek,
-        message => this.daysOfWeek[message.datetime.getDay()]))
+        (message) => this.daysOfWeek[message.datetime.getDay()]))
         .map(([name, count]) => ({ name, count }));
       return {
-        labels: counts.map(el => el.name),
+        labels: counts.map((el) => el.name),
         datasets: [{
-          data: counts.map(el => el.count),
-          backgroundColor: palette('tol-rainbow', counts.length, -1).reverse().map(hex => `#${hex}`),
+          data: counts.map((el) => el.count),
+          backgroundColor: palette('tol-rainbow', counts.length, -1).reverse().map((hex) => `#${hex}`),
         }],
       };
     },

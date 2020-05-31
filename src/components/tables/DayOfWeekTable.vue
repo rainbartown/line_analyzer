@@ -47,7 +47,7 @@ export default {
       let counts = {};
       if (this.messages.length) {
         counts = countMessage(this.messages, this.daysOfWeek,
-          message => this.daysOfWeek[message.datetime.getDay()]);
+          (message) => this.daysOfWeek[message.datetime.getDay()]);
       }
       return Object.entries(counts).map(([dayOfWeek, count]) => ({ name: dayOfWeek, count }));
     },

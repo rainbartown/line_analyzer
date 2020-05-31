@@ -44,7 +44,7 @@ export default {
       'speakers',
     ]),
     items() {
-      const counts = countMessage(this.messages, this.speakers, message => message.speaker);
+      const counts = countMessage(this.messages, this.speakers, (message) => message.speaker);
       return Object.entries(counts).map(([name, count]) => ({ name, count }));
     },
   },

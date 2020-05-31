@@ -47,7 +47,7 @@ export default {
       let counts = {};
       if (this.messages.length) {
         counts = countMessage(this.messages, this.hours,
-          message => this.hours[message.datetime.getHours()]);
+          (message) => this.hours[message.datetime.getHours()]);
       }
       return Object.entries(counts).map(([hour, count]) => ({ name: hour, count }));
     },
