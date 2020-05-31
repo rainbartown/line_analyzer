@@ -1,6 +1,4 @@
 module.exports = {
-  // for GitHub Pages
-  outputDir: 'docs',
   publicPath: './',
   filenameHashing: false,
   productionSourceMap: false,
