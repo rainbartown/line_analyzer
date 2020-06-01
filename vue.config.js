@@ -15,4 +15,7 @@ module.exports = {
         .set('chart.js', 'chart.js/dist/Chart.bundle.min.js');
     }
   },
+  transpileDependencies: [
+    'vuetify',
+  ],
 };
