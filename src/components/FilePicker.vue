@@ -15,18 +15,22 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapActions } from 'vuex';
 
-export default {
+export default Vue.extend({
   methods: {
-    onChange(event) {
-      const file = event.target.files[0];
-      this.read(file);
+    onChange(event: Event): void {
+      const { target } = event;
+      if (target instanceof HTMLInputElement && target.files !== null) {
+        const file = target.files[0];
+        this.read(file);
+      }
     },
     ...mapActions([
       'read',
     ]),
   },
-};
+});
 </script>

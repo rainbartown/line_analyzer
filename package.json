@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/chart.js": "^2.9.21",
+    "@types/color": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vue/cli-plugin-babel": "^4.4.1",

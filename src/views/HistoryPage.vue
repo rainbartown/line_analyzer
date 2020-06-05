@@ -44,11 +44,12 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import HistoryItem from '@/components/history_item.vue';
+import HistoryItem from '@/components/HistoryItem.vue';
 
-export default {
+export default Vue.extend({
   name: 'HistoryPage',
   components: {
     HistoryItem,
@@ -78,5 +79,5 @@ export default {
       'history',
     ]),
   },
-};
+});
 </script>
