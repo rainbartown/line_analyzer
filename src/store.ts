@@ -16,7 +16,7 @@ export default new Vuex.Store({
       .map((hour) => `${`0${hour}`.slice(-2)}時台`),
     hoursData: [...Array(24).keys()]
       .map((hour) => `${`0${hour}`.slice(-2)}時台`)
-      .reduce((data, hour) => {
+      .reduce((data: {[key: string]: { name: string }}, hour) => {
         data[hour] = { name: hour }; // eslint-disable-line no-param-reassign
         return data;
       }, {}),

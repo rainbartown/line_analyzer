@@ -1,14 +1,14 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import VueRouter from 'vue-router';
 import store from '@/store';
 import HomePage from '@/views/HomePage.vue';
 import HistoryPage from '@/views/HistoryPage.vue';
 import TablePage from '@/views/TablePage.vue';
 import ChartPage from '@/views/ChartPage.vue';
 
-Vue.use(Router);
+Vue.use(VueRouter);
 
-export default new Router({
+export default new VueRouter({
   routes: [
     {
       path: '/',

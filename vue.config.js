@@ -9,6 +9,9 @@ module.exports = {
       clientsClaim: true,
     },
   },
+  configureWebpack: {
+    devtool: 'source-map',
+  },
   chainWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       config.resolve.alias

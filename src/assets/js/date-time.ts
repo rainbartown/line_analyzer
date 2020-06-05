@@ -1,12 +1,11 @@
 /**
  * Date型をフォーマットする関数
- * @param {Date} datetime 日時
- * @param {string} format フォーマット
- * @returns {string} フォーマットされた文字列
+ * @param datetime 日時
+ * @param format フォーマット
  */
-const formatDateTime = (datetime, format) => {
+const formatDateTime = (datetime: Date, format: string) => {
   let formated = format;
-  formated = formated.replace(/yyyy/g, datetime.getFullYear());
+  formated = formated.replace(/yyyy/g, `${datetime.getFullYear()}`);
   formated = formated.replace(/MM/g, `0${datetime.getMonth() + 1}`.slice(-2));
   formated = formated.replace(/dd/g, `0${datetime.getDate()}`.slice(-2));
   formated = formated.replace(/HH/g, `0${datetime.getHours()}`.slice(-2));
@@ -17,16 +16,22 @@ const formatDateTime = (datetime, format) => {
 };
 
 
+type UnitType = 'year' | 'month' | 'day'
+
+
 /**
  * 時系列データをまとめるためのクラス
  */
 class DateTimeUnit {
+  datetime: Date
+
+  unit: UnitType
+
   /**
-   * コンストラクタ
-   * @param {Date} datetime
-   * @param {string} unit 時間単位（'year'|'month'|'day'）
+   * @param datetime
+   * @param unit 時間単位
    */
-  constructor(datetime, unit) {
+  constructor(datetime: Date, unit: UnitType) {
     this.unit = unit;
     switch (this.unit) {
       case 'year':
@@ -47,7 +52,7 @@ class DateTimeUnit {
   /**
    * unit分時間を進める
    */
-  addUnit() {
+  addUnit(): void {
     switch (this.unit) {
       case 'year':
         this.datetime.setFullYear(this.datetime.getFullYear() + 1);
@@ -65,4 +70,4 @@ class DateTimeUnit {
 }
 
 
-export { formatDateTime, DateTimeUnit };
+export { formatDateTime, UnitType, DateTimeUnit };

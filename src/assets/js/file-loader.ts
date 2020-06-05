@@ -1,34 +1,53 @@
+import { Message, HistoryEvent } from '@/assets/js/data';
+
+
 /**
  * トークファイルを読み、中身のテキストを返す関数
- * @param {string} file トークファイル名
- * @returns {string} トークファイルの中身
+ * @param file トークファイル
+ * @returns トークファイルの中身
  */
-const readFile = (file) => (
-  new Promise((resolve, reject) => {
+const readFile = (file: File): Promise<string> => (
+  new Promise<string>((resolve, reject) => {
     // ファイルが選択されていなければエラー
     if (file === undefined) reject(new Error('ファイルが選択されていません'));
     // ファイル形式がテキストでなければエラー
     if (file.type !== 'text/plain') reject(new Error('ファイル形式が間違っています'));
 
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => {
+      const { result } = reader;
+      if (typeof result === 'string') resolve(result);
+      reject(new Error('ファイル読み込み中にエラーが発生しました'));
+    };
     reader.onerror = () => reject(new Error('ファイル読み込み中にエラーが発生しました'));
     reader.readAsText(file);
   })
 );
 
+
+/**
+ * トークグループの情報を表すインタフェース
+ */
+interface TalkInfo {
+  talkName: string;
+  history: HistoryEvent[];
+  messages: Message[];
+  speakersData: {[name: string]: {name: string}};
+}
+
+
 /* eslint-disable max-len */
 /**
  *  トークファイルの中身を読み込んで、トークグループの情報を返す関数
  * @param {string} text トークファイルの中身
- * @returns {{talkName : string, messages : {speaker : string, datetime : Date}[], speakersData : {name : string}}}
+ * @returns トークグループの情報
  */
 /* eslint-enable max-len */
-const loadFile = async (text) => {
+const loadFile = async (text: string): Promise<TalkInfo> => {
   const lines = text.split('\n');
-  const history = [];
-  const messages = [];
-  const speakersData = {};
+  const history: HistoryEvent[] = [];
+  const messages: Message[] = [];
+  const speakersData: {[name: string]: {name: string}} = {};
 
   // トークルーム名
   const talkNamePattern = /^\[LINE\] (.*)のトーク履歴/; // 1行目のトーク名 "[LINE] 〇〇のトーク履歴"
@@ -40,9 +59,9 @@ const loadFile = async (text) => {
   const datePattern = /^20[0-9][0-9]\/[0-1][0-9]\/[0-3][0-9]\(.\)/; // 日付 "2019/01/01(火)"
   const timePattern = /^[0-2][0-9]:[0-5][0-9]$/; // 時刻 "00:00"
   const changeTalkNamePattern = /^(.*)がグループ名を(.*)に変更しました。/; // グループ名の変更
-  let year;
-  let month;
-  let dayOfMonth;
+  let year: number;
+  let month: number;
+  let dayOfMonth: number;
   lines.forEach((line) => {
     const col = line.split('\t');
     switch (col.length) {
@@ -54,8 +73,9 @@ const loadFile = async (text) => {
       case 2: // グループイベント
         if (col[0].match(timePattern)) { // 時刻 "00:00"
           const [hour, minute] = col[0].split(':').map((el) => parseInt(el, 10));
-          if (col[1].match(changeTalkNamePattern)) { // グループ名の変更
-            const [, actor, newTalkName] = col[1].match(changeTalkNamePattern);
+          const match = col[1].match(changeTalkNamePattern);
+          if (match) { // グループ名の変更
+            const [, actor, newTalkName] = match;
             history.push({
               type: 'CHANGE_TALK_NAME',
               datetime: new Date(year, month - 1, dayOfMonth, hour, minute, 30, 0),
@@ -77,7 +97,7 @@ const loadFile = async (text) => {
         }
         break;
       default:
-        //
+      //
     }
   });
 
