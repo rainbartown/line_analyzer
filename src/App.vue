@@ -49,16 +49,28 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import FilePicker from '@/components/FilePicker.vue';
 
-export default {
+interface Data {
+  drawer: boolean | null;
+}
+
+interface DrawerPageListItem {
+  action: string;
+  title: string;
+  path: string;
+  disabled: boolean;
+}
+
+export default Vue.extend({
   name: 'App',
   components: {
     FilePicker,
   },
-  data() {
+  data(): Data {
     return {
       drawer: null,
     };
@@ -69,13 +81,13 @@ export default {
       'showNavIconBadge',
       'talkName',
     ]),
-    title() {
+    title(): string {
       if (this.hasData) {
         return this.talkName;
       }
       return 'LINE Analyzer';
     },
-    pages() {
+    pages(): DrawerPageListItem[] {
       return [
         {
           action: 'mdi-home',
@@ -105,17 +117,17 @@ export default {
     },
   },
   methods: {
-    onClickNavIcon() {
+    onClickNavIcon(): void {
       this.drawer = !this.drawer;
       this.showNavIconBadge(false);
     },
   },
   watch: {
-    hasData(val) {
+    hasData(val): void {
       if (val) {
         this.drawer = true;
       }
     },
   },
-};
+});
 </script>

@@ -13,16 +13,17 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { formatDateTime } from '@/assets/js/date-time';
 
-export default {
+export default Vue.extend({
   name: 'HistoryItem',
   props: ['datetime'],
   methods: {
-    format(datetime) {
+    format(datetime: Date) {
       return formatDateTime(datetime, 'yyyy/MM/dd HH:mm');
     },
   },
-};
+});
 </script>

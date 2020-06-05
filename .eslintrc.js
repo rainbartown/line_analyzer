@@ -6,12 +6,14 @@ module.exports = {
   extends: [
     'plugin:vue/essential',
     '@vue/airbnb',
+    '@vue/typescript/recommended',
   ],
-  rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-  },
   parserOptions: {
-    parser: 'babel-eslint',
+    ecmaVersion: 2020,
+  },
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }]  // for TypeScript
   },
 };

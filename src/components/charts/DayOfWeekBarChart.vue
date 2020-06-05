@@ -2,13 +2,14 @@
   <BarChart :chartData="chartData" :options="options"/>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import Color from 'color';
 import BarChart from '@/components/charts/base/BarChart.vue';
 import { countMessage } from '@/assets/js/data';
 
-export default {
+export default Vue.extend({
   name: 'DayOfWeekBarChart',
   components: {
     BarChart,
@@ -41,5 +42,5 @@ export default {
       },
     }),
   },
-};
+});
 </script>

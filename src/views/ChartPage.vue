@@ -23,14 +23,15 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import SpeakerPieChart from '@/components/charts/SpeakerPieChart.vue';
 import HourBarChart from '@/components/charts/HourBarChart.vue';
 import DayOfWeekBarChart from '@/components/charts/DayOfWeekBarChart.vue';
 import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart.vue';
 
-export default {
+export default Vue.extend({
   name: 'ChartPage',
   components: {
     SpeakerPieChart,
@@ -52,5 +53,5 @@ export default {
       'messages',
     ]),
   },
-};
+});
 </script>

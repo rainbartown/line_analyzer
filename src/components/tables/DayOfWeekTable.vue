@@ -14,11 +14,12 @@
   </v-data-table>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { countMessage } from '@/assets/js/data';
 
-export default {
+export default Vue.extend({
   name: 'DayOfWeekTable',
   data: () => ({
     headers: [
@@ -52,5 +53,5 @@ export default {
       return Object.entries(counts).map(([dayOfWeek, count]) => ({ name: dayOfWeek, count }));
     },
   },
-};
+});
 </script>

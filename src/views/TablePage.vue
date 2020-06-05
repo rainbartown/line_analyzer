@@ -20,12 +20,13 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import SpeakerTable from '@/components/tables/SpeakerTable.vue';
 import HourTable from '@/components/tables/HourTable.vue';
 import dayOfWeekTable from '@/components/tables/DayOfWeekTable.vue';
 
-export default {
+export default Vue.extend({
   name: 'TablePage',
   components: {
     SpeakerTable,
@@ -40,5 +41,5 @@ export default {
       { label: '曜日', value: 'dayOfWeek' },
     ],
   }),
-};
+});
 </script>

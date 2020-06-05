@@ -20,23 +20,30 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import Color from 'color';
 import LineChart from '@/components/charts/base/LineChart.vue';
-import { generateTimeSequence } from '@/assets/js/data';
-import { DateTimeUnit } from '@/assets/js/date-time';
+import { Message, generateTimeSequence } from '@/assets/js/data';
+import { UnitType, DateTimeUnit } from '@/assets/js/date-time';
+import { ChartDataSets, ChartScales } from 'chart.js';
+
+interface TimeSeriesChartPoint {
+  t: Date;
+  y: number;
+}
 
 /**
  * 時系列データを作成
  */
-const generateTimeSeriesData = (messages, unit) => {
+const generateTimeSeriesData = (messages: Message[], unit: UnitType) => {
   // 時系列シーケンスを生成
   const start = messages[0].datetime;
   const end = messages[messages.length - 1].datetime;
   const sequence = generateTimeSequence(start, end, unit);
   // データを初期化
-  const data = {};
+  const data: {[time: number]: TimeSeriesChartPoint} = {};
   sequence.forEach((datetime) => {
     const time = datetime.getTime();
     data[time] = { t: datetime, y: 0 };
@@ -49,12 +56,17 @@ const generateTimeSeriesData = (messages, unit) => {
   return Object.values(data);
 };
 
-export default {
+interface UnitListItem {
+  label: string;
+  value: UnitType;
+}
+
+export default Vue.extend({
   name: 'TimeSeriesLineChart',
   components: {
     LineChart,
   },
-  data() {
+  data(): { selectedUnit: UnitListItem; units: UnitListItem[] } {
     return {
       selectedUnit: { label: '月', value: 'month' },
       units: [
@@ -68,7 +80,7 @@ export default {
     ...mapGetters([
       'messages',
     ]),
-    chartData() {
+    chartData(): { datasets: ChartDataSets[] } {
       return {
         datasets: [{
           label: '発言回数',
@@ -79,7 +91,7 @@ export default {
         }],
       };
     },
-    options() {
+    options(): { scales: ChartScales } {
       return {
         scales: {
           xAxes: [{
@@ -104,5 +116,5 @@ export default {
       };
     },
   },
-};
+});
 </script>

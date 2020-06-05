@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { Bar, mixins } from 'vue-chartjs';
 
-export default {
+const { reactiveProp } = mixins;
+
+export default Vue.extend({
   name: 'BarChart',
   extends: Bar,
-  mixins: [mixins.reactiveProp],
+  mixins: [reactiveProp],
   props: {
     chartData: {
       type: Object,
@@ -15,16 +18,16 @@ export default {
       default: null,
     },
   },
-  mounted() {
-    this.renderChart(this.chartData, this.options);
+  mounted(): void {
+    (this as unknown as Bar).renderChart(this.chartData, this.options);
   },
   watch: {
-    data() {
-      this.renderChart(this.chartData, this.options);
+    data(): void {
+      (this as unknown as Bar).renderChart(this.chartData, this.options);
     },
-    options() {
-      this.renderChart(this.chartData, this.options);
+    options(): void {
+      (this as unknown as Bar).renderChart(this.chartData, this.options);
     },
   },
-};
+});
 </script>
