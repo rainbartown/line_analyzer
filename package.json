@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@types/chart.js": "^2.9.21",
     "@types/color": "^3.0.1",
+    "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vue/cli-plugin-babel": "^4.4.1",
@@ -29,10 +31,12 @@
     "@vue/cli-plugin-pwa": "^4.4.1",
     "@vue/cli-plugin-router": "^4.4.1",
     "@vue/cli-plugin-typescript": "^4.4.1",
+    "@vue/cli-plugin-unit-jest": "^4.4.1",
     "@vue/cli-plugin-vuex": "^4.4.1",
     "@vue/cli-service": "^4.4.1",
     "@vue/eslint-config-airbnb": "^5.0.2",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "@vue/test-utils": "^1.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
