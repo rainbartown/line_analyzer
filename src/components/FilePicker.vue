@@ -8,6 +8,7 @@
     </v-btn>
     <input
       type="file"
+      accept="text/plain"
       v-show="false"
       ref="filePicker"
       @change="onChange"
@@ -17,20 +18,18 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 
 export default Vue.extend({
   methods: {
+    loadTalkFile(file: File): void { this.$store.dispatch('line/loadTalkFile', file); },
+
     onChange(event: Event): void {
       const { target } = event;
-      if (target instanceof HTMLInputElement && target.files !== null) {
+      if (target instanceof HTMLInputElement && target.files?.length === 1) {
         const file = target.files[0];
-        this.read(file);
+        this.loadTalkFile(file);
       }
     },
-    ...mapActions([
-      'read',
-    ]),
   },
 });
 </script>
