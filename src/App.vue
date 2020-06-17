@@ -39,7 +39,7 @@
         {{ title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <FilePicker/>
+      <file-picker />
     </v-app-bar>
 
     <!-- コンテンツ -->
@@ -51,7 +51,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
 import FilePicker from '@/components/FilePicker.vue';
 
 interface Data {
@@ -67,26 +66,33 @@ interface DrawerPageListItem {
 
 export default Vue.extend({
   name: 'App',
+
   components: {
     FilePicker,
   },
+
   data(): Data {
     return {
       drawer: null,
     };
   },
+
   computed: {
-    ...mapGetters([
-      'hasData',
-      'showNavIconBadge',
-      'talkName',
-    ]),
+    talkName(): string {
+      return this.$store.getters['line/talkName'];
+    },
+
+    hasLineTalkData(): boolean {
+      return this.$store.getters['line/hasData'];
+    },
+
     title(): string {
-      if (this.hasData) {
+      if (this.hasLineTalkData) {
         return this.talkName;
       }
       return 'LINE Analyzer';
     },
+
     pages(): DrawerPageListItem[] {
       return [
         {
@@ -99,32 +105,33 @@ export default Vue.extend({
           action: 'mdi-calendar-clock',
           title: 'History',
           path: '/history',
-          disabled: !this.hasData,
+          disabled: !this.hasLineTalkData,
         },
         {
           action: 'mdi-table',
           title: 'Table',
           path: '/table',
-          disabled: !this.hasData,
+          disabled: !this.hasLineTalkData,
         },
         {
           action: 'mdi-chart-line',
           title: 'Chart',
           path: '/chart',
-          disabled: !this.hasData,
+          disabled: !this.hasLineTalkData,
         },
       ];
     },
   },
+
   methods: {
     onClickNavIcon(): void {
       this.drawer = !this.drawer;
-      this.showNavIconBadge(false);
     },
   },
+
   watch: {
-    hasData(val): void {
-      if (val) {
+    hasLineTalkData(hasData: boolean): void {
+      if (hasData) {
         this.drawer = true;
       }
     },
