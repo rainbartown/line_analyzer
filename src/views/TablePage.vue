@@ -12,9 +12,9 @@
         ></v-select>
       </v-flex>
       <v-flex xs12>
-        <SpeakerTable v-if="selectedKey.value === 'speaker'"/>
-        <HourTable v-else-if="selectedKey.value === 'hour'"/>
-        <dayOfWeekTable v-else-if="selectedKey.value === 'dayOfWeek'"/>
+        <sender-table v-if="selectedKey.value === 'sender'" />
+        <hour-table v-else-if="selectedKey.value === 'hour'" />
+        <day-of-week-table v-else-if="selectedKey.value === 'dayOfWeek'" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -22,21 +22,23 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import SpeakerTable from '@/components/tables/SpeakerTable.vue';
+import SenderTable from '@/components/tables/SenderTable.vue';
 import HourTable from '@/components/tables/HourTable.vue';
 import dayOfWeekTable from '@/components/tables/DayOfWeekTable.vue';
 
 export default Vue.extend({
   name: 'TablePage',
+
   components: {
-    SpeakerTable,
+    SenderTable,
     HourTable,
     dayOfWeekTable,
   },
+
   data: () => ({
-    selectedKey: { label: '発言者', value: 'speaker' },
+    selectedKey: { label: '送信者', value: 'sender' },
     keys: [
-      { label: '発言者', value: 'speaker' },
+      { label: '送信者', value: 'sender' },
       { label: '時間帯', value: 'hour' },
       { label: '曜日', value: 'dayOfWeek' },
     ],

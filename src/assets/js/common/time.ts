@@ -3,6 +3,26 @@
  */
 
 
+// 曜日の名前
+const daysOfWeek: string[] = [
+  '日曜日',
+  '月曜日',
+  '火曜日',
+  '水曜日',
+  '木曜日',
+  '金曜日',
+  '土曜日',
+];
+
+
+// 〇時台の配列
+// 00:00-0:59, 01:00-01:59, ..., 23:59
+const hourRanges = [...Array(24).keys()].map((hour) => {
+  const zeroPaddedHour = `${hour}`.padStart(2, '0');
+  return `${zeroPaddedHour}時台`;
+});
+
+
 /**
  * Date型を文字列に変換する関数
  * @param datetime 日時
@@ -22,5 +42,7 @@ const formatDatetime = (datetime: Date, format: string) => {
 
 
 export {
-  formatDatetime, // eslint-disable-line import/prefer-default-export
+  hourRanges,
+  daysOfWeek,
+  formatDatetime,
 };

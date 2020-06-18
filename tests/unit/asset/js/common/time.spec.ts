@@ -1,4 +1,13 @@
-import { formatDatetime } from '@/assets/js/common/time';
+import { hourRanges, formatDatetime } from '@/assets/js/common/time';
+
+
+it('hourRanges', () => {
+  expect(hourRanges).toHaveLength(24);
+  expect(hourRanges[0]).toBe('00時台');
+  expect(hourRanges[9]).toBe('09時台');
+  expect(hourRanges[12]).toBe('12時台');
+  expect(hourRanges[23]).toBe('23時台');
+});
 
 
 describe('formatDatetime', () => {
