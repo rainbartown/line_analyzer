@@ -15,14 +15,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { formatDateTime } from '@/assets/js/date-time';
+import { formatDatetime } from '@/assets/js/common/time';
 
 export default Vue.extend({
   name: 'HistoryItem',
   props: ['datetime'],
   methods: {
     format(datetime: Date) {
-      return formatDateTime(datetime, 'yyyy/MM/dd HH:mm');
+      return formatDatetime(datetime, 'yyyy/MM/dd HH:mm');
     },
   },
 });
