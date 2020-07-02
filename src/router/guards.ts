@@ -22,5 +22,5 @@ const jumpToRootIfNoData: NavigationGuard<Vue> = (to, from, next) => {
 
 
 export {
-  jumpToRootIfNoData, // eslint-disable-line import/prefer-default-export
+  jumpToRootIfNoData,
 };

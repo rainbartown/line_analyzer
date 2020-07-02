@@ -19,6 +19,17 @@ module.exports = {
   overrides: [
     {
       files: [
+        '**/*.ts',
+      ],
+      rules: {
+        'no-underscore-dangle': 'off',
+        'no-useless-constructor': 'off',
+        '@typescript-eslint/no-useless-constructor': 'error',
+        'import/prefer-default-export': 'off',
+      },
+    },
+    {
+      files: [
         '**/__tests__/*.{j,t}s?(x)',
         '**/tests/unit/**/*.spec.{j,t}s?(x)',
       ],
@@ -27,6 +38,8 @@ module.exports = {
       },
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
+        'no-useless-constructor': 'off',
+        '@typescript-eslint/no-useless-constructor': 'error',
       },
     },
   ],

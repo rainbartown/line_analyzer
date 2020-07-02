@@ -28,5 +28,5 @@ const readTextFile = (file: File): Promise<string> => (
 
 
 export {
-  readTextFile, // eslint-disable-line import/prefer-default-export
+  readTextFile,
 };
