@@ -1,30 +1,5 @@
 <template>
   <v-app>
-    <!-- ナビゲーションバー -->
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      app
-      clipped
-      width=200
-    >
-      <v-list flat>
-        <v-list-item
-          v-for="page in pages"
-          :key="page.title"
-          :to="page.path"
-          :disabled="page.disabled"
-          active-class="primary--text text--darken-2"
-        >
-          <v-list-item-action>
-            <v-icon>{{ page.action }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ page.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
     <v-app-bar
       fixed
       app
@@ -32,8 +7,8 @@
       color="primary"
     >
       <v-app-bar-nav-icon
+        @click="isDrawerOpen = !isDrawerOpen"
         class="white--text"
-        @click="drawer =! drawer"
       ></v-app-bar-nav-icon>
       <v-toolbar-title class="headline white--text font-weight-regular">
         {{ title }}
@@ -41,6 +16,20 @@
       <v-spacer></v-spacer>
       <file-picker />
     </v-app-bar>
+
+    <!-- ナビゲーションドロワー -->
+    <navigation-drawer v-model="isDrawerOpen">
+      <navigation-drawer-list>
+        <navigation-drawer-list-item
+          v-for="item in drawerListItems"
+          :key="item.title"
+          :icon="item.icon"
+          :title="item.title"
+          :to="item.to"
+          :disabled="item.disabled"
+        />
+      </navigation-drawer-list>
+    </navigation-drawer>
 
     <!-- コンテンツ -->
     <v-content>
@@ -51,31 +40,39 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import {
+  NavigationDrawer,
+  NavigationDrawerList,
+  NavigationDrawerListItem,
+} from '@/components/app/navigation-drawer';
 import FilePicker from '@/components/FilePicker.vue';
 
-interface Data {
-  drawer: boolean | null;
+interface DrawerListItem {
+  to: string;
+  icon: string;
+  title: string;
+  disabled: boolean;
 }
 
-interface DrawerPageListItem {
-  action: string;
-  title: string;
-  path: string;
-  disabled: boolean;
+interface Data {
+  isDrawerOpen: boolean | null;
 }
 
 export default Vue.extend({
   name: 'App',
 
   components: {
+    NavigationDrawer,
+    NavigationDrawerList,
+    NavigationDrawerListItem,
     FilePicker,
   },
 
-  data(): Data {
-    return {
-      drawer: null,
-    };
-  },
+  data: (): Data => ({
+    // 初期値をnullにするとモバイルでは閉じた状態、デスクトップでは開いた状態で
+    // ドロワーが初期化される。
+    isDrawerOpen: null,
+  }),
 
   computed: {
     talkName(): string {
@@ -93,30 +90,30 @@ export default Vue.extend({
       return 'LINE Analyzer';
     },
 
-    pages(): DrawerPageListItem[] {
+    drawerListItems(): DrawerListItem[] {
       return [
         {
-          action: 'mdi-home',
+          to: '/',
+          icon: 'mdi-home',
           title: 'Home',
-          path: '/',
           disabled: false,
         },
         {
-          action: 'mdi-calendar-clock',
+          to: '/history',
+          icon: 'mdi-calendar-clock',
           title: 'History',
-          path: '/history',
           disabled: !this.hasLineTalkData,
         },
         {
-          action: 'mdi-table',
+          to: '/table',
+          icon: 'mdi-table',
           title: 'Table',
-          path: '/table',
           disabled: !this.hasLineTalkData,
         },
         {
-          action: 'mdi-chart-line',
+          to: '/chart',
+          icon: 'mdi-chart-line',
           title: 'Chart',
-          path: '/chart',
           disabled: !this.hasLineTalkData,
         },
       ];
@@ -125,14 +122,14 @@ export default Vue.extend({
 
   methods: {
     onClickNavIcon(): void {
-      this.drawer = !this.drawer;
+      this.isDrawerOpen = !this.isDrawerOpen;
     },
   },
 
   watch: {
     hasLineTalkData(hasData: boolean): void {
       if (hasData) {
-        this.drawer = true;
+        this.isDrawerOpen = true;
       }
     },
   },
