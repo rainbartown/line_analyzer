@@ -14,10 +14,10 @@
     </v-layout>
     <v-layout wrap>
       <v-flex xs12>
-        <SpeakerPieChart v-if="selectedKey.value === 'speaker'"/>
-        <HourBarChart v-if="selectedKey.value === 'hour'"/>
-        <DayOfWeekBarChart v-if="selectedKey.value === 'dayOfWeek'"/>
-        <TimeSeriesLineChart v-if="selectedKey.value === 'timeSeries'"/>
+        <sender-pie-chart v-if="selectedKey.value === 'sender'" />
+        <hour-bar-chart v-if="selectedKey.value === 'hour'" />
+        <day-of-week-bar-chart v-if="selectedKey.value === 'dayOfWeek'" />
+        <time-series-line-chart v-if="selectedKey.value === 'timeSeries'" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -25,33 +25,29 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
-import SpeakerPieChart from '@/components/charts/SpeakerPieChart.vue';
+import SenderPieChart from '@/components/charts/SenderPieChart.vue';
 import HourBarChart from '@/components/charts/HourBarChart.vue';
 import DayOfWeekBarChart from '@/components/charts/DayOfWeekBarChart.vue';
 import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart.vue';
 
 export default Vue.extend({
   name: 'ChartPage',
+
   components: {
-    SpeakerPieChart,
+    SenderPieChart,
     HourBarChart,
     DayOfWeekBarChart,
     TimeSeriesLineChart,
   },
+
   data: () => ({
-    selectedKey: { label: '発言者', value: 'speaker' },
+    selectedKey: { label: '送信者', value: 'sender' },
     keys: [
-      { label: '発言者', value: 'speaker' },
+      { label: '送信者', value: 'sender' },
       { label: '時間帯', value: 'hour' },
       { label: '曜日', value: 'dayOfWeek' },
       { label: '時系列', value: 'timeSeries' },
     ],
   }),
-  computed: {
-    ...mapGetters([
-      'messages',
-    ]),
-  },
 });
 </script>

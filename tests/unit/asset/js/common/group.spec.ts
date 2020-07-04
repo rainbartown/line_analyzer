@@ -71,3 +71,40 @@ describe('getCountRecords', () => {
     expect(group.getCountRecords(keyArray, groupMap)).toStrictEqual(countRecords);
   });
 });
+
+
+describe('sortCountRecordsByCount', () => {
+  let countRecords: group.CountRecord<string>[];
+
+  beforeEach(() => {
+    countRecords = [
+      { key: 'square', count: 3 },
+      { key: 'odd', count: 5 },
+      { key: 'even', count: 4 },
+      { key: 'perfect', count: 1 },
+    ];
+  });
+
+  it('昇順', () => {
+    const sortedCountRecords: group.CountRecord<string>[] = [
+      { key: 'perfect', count: 1 },
+      { key: 'square', count: 3 },
+      { key: 'even', count: 4 },
+      { key: 'odd', count: 5 },
+    ];
+
+    expect(group.sortCountRecordsByCount(countRecords, 'ascent')).toStrictEqual(sortedCountRecords);
+  });
+
+  it('降順', () => {
+    const sortedCountRecords: group.CountRecord<string>[] = [
+      { key: 'odd', count: 5 },
+      { key: 'even', count: 4 },
+      { key: 'square', count: 3 },
+      { key: 'perfect', count: 1 },
+    ];
+
+    expect(group.sortCountRecordsByCount(countRecords, 'descent'))
+      .toStrictEqual(sortedCountRecords);
+  });
+});

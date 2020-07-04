@@ -59,9 +59,30 @@ const getCountRecords = <K, T>(keyArray: K[], groupMap: GroupMap<K, T>) => {
 };
 
 
+/**
+ * カウントレコードの配列をカウントでソートする。
+ * @param countRecords カウントレコードの配列
+ * @param order 昇順・降順
+ * @returns ソートされたカウントレコードの配列
+ */
+const sortCountRecordsByCount = <K>(countRecords: CountRecord<K>[], order: 'ascent' | 'descent'):
+  CountRecord<K>[] => {
+  const sortedCountRecords = [...countRecords];
+
+  if (order === 'ascent') {
+    sortedCountRecords.sort((a, b) => a.count - b.count);
+  } else {
+    sortedCountRecords.sort((a, b) => b.count - a.count);
+  }
+
+  return sortedCountRecords;
+};
+
+
 export {
   GroupMap,
   groupBy,
   CountRecord,
   getCountRecords,
+  sortCountRecordsByCount,
 };

@@ -14,7 +14,7 @@
     </v-layout>
     <v-layout wrap>
       <v-flex xs12>
-        <LineChart :chartData="chartData" :options="options"/>
+        <line-chart :chartData="chartData" :options="chartOptions" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -22,76 +22,77 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
+import Chart from 'chart.js';
 import Color from 'color';
+import { generateTimeSequence } from '@/assets/js/common/time-sequence';
+import { TimeUnit, floorTime } from '@/assets/js/common/time-unit';
+import * as group from '@/assets/js/common/group';
+import { LineMessageEvent } from '@/assets/js/line/line-event';
 import LineChart from '@/components/charts/base/LineChart.vue';
-import { Message, generateTimeSequence } from '@/assets/js/data';
-import { UnitType, DateTimeUnit } from '@/assets/js/date-time';
-import { ChartDataSets, ChartScales } from 'chart.js';
-
-interface TimeSeriesChartPoint {
-  t: Date;
-  y: number;
-}
-
-/**
- * 時系列データを作成
- */
-const generateTimeSeriesData = (messages: Message[], unit: UnitType) => {
-  // 時系列シーケンスを生成
-  const start = messages[0].datetime;
-  const end = messages[messages.length - 1].datetime;
-  const sequence = generateTimeSequence(start, end, unit);
-  // データを初期化
-  const data: {[time: number]: TimeSeriesChartPoint} = {};
-  sequence.forEach((datetime) => {
-    const time = datetime.getTime();
-    data[time] = { t: datetime, y: 0 };
-  });
-  // カウント
-  messages.forEach((message) => {
-    const time = (new DateTimeUnit(message.datetime, unit)).datetime.getTime();
-    data[time].y += 1;
-  });
-  return Object.values(data);
-};
 
 interface UnitListItem {
   label: string;
-  value: UnitType;
+  value: TimeUnit;
 }
+
+const getCountRecords = (events: LineMessageEvent[], unit: TimeUnit):
+  group.CountRecord<number>[] => {
+  const groupMap = group.groupBy(events, (event) => floorTime(event.datetime, unit).getTime());
+
+  const start = events[0].datetime;
+  const end = events[events.length - 1].datetime;
+  const datetimeSequence = generateTimeSequence(start, end, unit);
+  const timeSequence = datetimeSequence.map((datetime) => datetime.getTime());
+  const countRecords = group.getCountRecords(timeSequence, groupMap);
+
+  return countRecords;
+};
+
+const transformToChartPoints = (countRecords: group.CountRecord<number>[]): Chart.ChartPoint[] => {
+  const data = countRecords.map(({ key: time, count }) => ({ t: time, y: count }));
+
+  return data;
+};
 
 export default Vue.extend({
   name: 'TimeSeriesLineChart',
+
   components: {
     LineChart,
   },
-  data(): { selectedUnit: UnitListItem; units: UnitListItem[] } {
+
+  data() {
     return {
-      selectedUnit: { label: '月', value: 'month' },
+      selectedUnit: { label: '月', value: 'month' } as UnitListItem,
       units: [
         { label: '年', value: 'year' },
         { label: '月', value: 'month' },
         { label: '日', value: 'day' },
-      ],
+      ] as UnitListItem[],
     };
   },
+
   computed: {
-    ...mapGetters([
-      'messages',
-    ]),
-    chartData(): { datasets: ChartDataSets[] } {
+    lineMessageEvents(): LineMessageEvent[] {
+      return this.$store.getters['line/lineMessageEvents'];
+    },
+
+    chartData(): Chart.ChartData {
+      const unit = this.selectedUnit.value;
+      const countRecords = getCountRecords(this.lineMessageEvents, unit);
+
       return {
         datasets: [{
-          label: '発言回数',
-          data: generateTimeSeriesData(this.messages, this.selectedUnit.value),
+          label: 'メッセージ数',
+          data: transformToChartPoints(countRecords),
           lineTension: 0,
           borderColor: Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string(),
           backgroundColor: Color(this.$vuetify.theme.currentTheme.primary).alpha(0.1).string(),
         }],
       };
     },
-    options(): { scales: ChartScales } {
+
+    chartOptions(): Chart.ChartOptions {
       return {
         scales: {
           xAxes: [{
@@ -99,6 +100,7 @@ export default Vue.extend({
             time: {
               unit: this.selectedUnit.value,
               displayFormats: {
+                year: 'YYYY',
                 month: 'YYYY/MM',
                 day: 'MM/DD',
               },

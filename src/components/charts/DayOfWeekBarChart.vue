@@ -1,38 +1,24 @@
 <template>
-  <BarChart :chartData="chartData" :options="options"/>
+  <bar-chart :chartData="chartData" :options="chartOptions" />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
+import Chart from 'chart.js';
 import Color from 'color';
+import { LineMessageEvent } from '@/assets/js/line/line-event';
 import BarChart from '@/components/charts/base/BarChart.vue';
-import { countMessage } from '@/assets/js/data';
+import { getCountRecords } from '@/components/tables/DayOfWeekTable.vue';
 
 export default Vue.extend({
   name: 'DayOfWeekBarChart',
+
   components: {
     BarChart,
   },
-  computed: {
-    ...mapGetters([
-      'messages',
-      'daysOfWeek',
-    ]),
-    chartData() {
-      const counts = Object.entries(countMessage(this.messages, this.daysOfWeek,
-        (message) => this.daysOfWeek[message.datetime.getDay()]))
-        .map(([name, count]) => ({ name, count }));
-      return {
-        labels: counts.map((el) => el.name),
-        datasets: [{
-          label: '発言回数',
-          data: counts.map((el) => el.count),
-          backgroundColor: Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string(),
-        }],
-      };
-    },
-    options: () => ({
+
+  data: () => ({
+    chartOptions: {
       scales: {
         yAxes: [{
           ticks: {
@@ -40,7 +26,29 @@ export default Vue.extend({
           },
         }],
       },
-    }),
+    } as Chart.ChartOptions,
+  }),
+
+  computed: {
+    lineMessageEvents(): LineMessageEvent[] {
+      return this.$store.getters['line/lineMessageEvents'];
+    },
+
+    chartData(): Chart.ChartData {
+      const countRecords = getCountRecords(this.lineMessageEvents);
+      const color = Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string();
+
+      const chartData: Chart.ChartData = {
+        labels: countRecords.map((record) => record.key),
+        datasets: [{
+          label: 'メッセージ数',
+          data: countRecords.map((record) => record.count),
+          backgroundColor: color,
+        }],
+      };
+
+      return chartData;
+    },
   },
 });
 </script>
