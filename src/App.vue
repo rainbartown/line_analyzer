@@ -5,7 +5,7 @@
       <app-bar-navigation-icon @click="onClickNavigationIcon" />
       <app-bar-title :title="appBarTitle" />
       <v-spacer></v-spacer>
-      <file-picker />
+      <file-picker-button />
     </app-bar>
 
     <!-- ナビゲーションドロワー -->
@@ -41,7 +41,7 @@ import {
   NavigationDrawerList,
   NavigationDrawerListItem,
 } from '@/components/app/navigation-drawer';
-import FilePicker from '@/components/FilePicker.vue';
+import FilePickerButton from '@/components/FilePickerButton.vue';
 
 interface DrawerListItem {
   to: string;
@@ -64,7 +64,7 @@ export default Vue.extend({
     NavigationDrawer,
     NavigationDrawerList,
     NavigationDrawerListItem,
-    FilePicker,
+    FilePickerButton,
   },
 
   data: (): Data => ({
