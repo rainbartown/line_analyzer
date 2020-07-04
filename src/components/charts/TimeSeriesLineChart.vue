@@ -2,14 +2,11 @@
   <v-container class="pa-0 ma-0">
     <v-layout wrap>
       <v-flex xs4>
-        <v-select
-          v-model="selectedUnit"
-          item-text="label"
-          item-value="value"
-          :items="units"
+        <select-list
+          v-model="timeUnit"
+          :items="selectListItems"
           label="時間単位"
-          return-object
-        ></v-select>
+        />
       </v-flex>
     </v-layout>
     <v-layout wrap>
@@ -29,10 +26,11 @@ import { TimeUnit, floorTime } from '@/assets/js/common/time-unit';
 import * as group from '@/assets/js/common/group';
 import { LineMessageEvent } from '@/assets/js/line/line-event';
 import LineChart from '@/components/charts/base/LineChart.vue';
+import SelectList from '@/components/SelectList.vue';
 
-interface UnitListItem {
-  label: string;
-  value: TimeUnit;
+interface SelectListItem {
+  readonly text: string;
+  readonly value: TimeUnit;
 }
 
 const getCountRecords = (events: LineMessageEvent[], unit: TimeUnit):
@@ -54,23 +52,28 @@ const transformToChartPoints = (countRecords: group.CountRecord<number>[]): Char
   return data;
 };
 
+interface Data {
+  timeUnit: TimeUnit;
+  selectListItems: SelectListItem[];
+}
+
 export default Vue.extend({
   name: 'TimeSeriesLineChart',
 
   components: {
+    SelectList,
     LineChart,
   },
 
-  data() {
-    return {
-      selectedUnit: { label: '月', value: 'month' } as UnitListItem,
-      units: [
-        { label: '年', value: 'year' },
-        { label: '月', value: 'month' },
-        { label: '日', value: 'day' },
-      ] as UnitListItem[],
-    };
-  },
+  data: (): Data => ({
+    timeUnit: 'month',
+
+    selectListItems: [
+      { text: '年', value: 'year' },
+      { text: '月', value: 'month' },
+      { text: '日', value: 'day' },
+    ],
+  }),
 
   computed: {
     lineMessageEvents(): LineMessageEvent[] {
@@ -78,7 +81,7 @@ export default Vue.extend({
     },
 
     chartData(): Chart.ChartData {
-      const unit = this.selectedUnit.value;
+      const unit = this.timeUnit;
       const countRecords = getCountRecords(this.lineMessageEvents, unit);
 
       return {
@@ -98,7 +101,7 @@ export default Vue.extend({
           xAxes: [{
             type: 'time',
             time: {
-              unit: this.selectedUnit.value,
+              unit: this.timeUnit,
               displayFormats: {
                 year: 'YYYY',
                 month: 'YYYY/MM',
