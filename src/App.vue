@@ -1,21 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar
-      fixed
-      app
-      clipped-left
-      color="primary"
-    >
-      <v-app-bar-nav-icon
-        @click="isDrawerOpen = !isDrawerOpen"
-        class="white--text"
-      ></v-app-bar-nav-icon>
-      <v-toolbar-title class="headline white--text font-weight-regular">
-        {{ title }}
-      </v-toolbar-title>
+    <!-- アプリケーションバー -->
+    <app-bar>
+      <app-bar-navigation-icon @click="onClickNavigationIcon" />
+      <app-bar-title :title="appBarTitle" />
       <v-spacer></v-spacer>
       <file-picker />
-    </v-app-bar>
+    </app-bar>
 
     <!-- ナビゲーションドロワー -->
     <navigation-drawer v-model="isDrawerOpen">
@@ -41,6 +32,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
+  AppBar,
+  AppBarNavigationIcon,
+  AppBarTitle,
+} from '@/components/app/app-bar';
+import {
   NavigationDrawer,
   NavigationDrawerList,
   NavigationDrawerListItem,
@@ -62,6 +58,9 @@ export default Vue.extend({
   name: 'App',
 
   components: {
+    AppBar,
+    AppBarNavigationIcon,
+    AppBarTitle,
     NavigationDrawer,
     NavigationDrawerList,
     NavigationDrawerListItem,
@@ -83,10 +82,8 @@ export default Vue.extend({
       return this.$store.getters['line/hasData'];
     },
 
-    title(): string {
-      if (this.hasLineTalkData) {
-        return this.talkName;
-      }
+    appBarTitle(): string {
+      if (this.hasLineTalkData) return this.talkName;
       return 'LINE Analyzer';
     },
 
@@ -121,7 +118,7 @@ export default Vue.extend({
   },
 
   methods: {
-    onClickNavIcon(): void {
+    onClickNavigationIcon(): void {
       this.isDrawerOpen = !this.isDrawerOpen;
     },
   },
