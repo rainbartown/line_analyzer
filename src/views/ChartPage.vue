@@ -25,7 +25,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import chartComponents, { ChartComponent } from '@/components/charts';
-import SelectList from '@/components/SelectList.vue';
+import SelectList from '@/components/form-input/SelectList.vue';
 
 interface SelectListItem {
   readonly text: string;

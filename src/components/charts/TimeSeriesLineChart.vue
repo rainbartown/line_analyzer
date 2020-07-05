@@ -30,7 +30,7 @@ import { generateTimeSequence } from '@/assets/js/common/time-sequence';
 import { TimeUnit, floorTime } from '@/assets/js/common/time-unit';
 import * as group from '@/assets/js/common/group';
 import { LineMessageEvent } from '@/assets/js/line/line-event';
-import SelectList from '@/components/SelectList.vue';
+import SelectList from '@/components/form-input/SelectList.vue';
 import { BaseLineChart } from './base';
 
 const getCountRecords = (events: LineMessageEvent[], unit: TimeUnit):

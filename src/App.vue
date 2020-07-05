@@ -41,7 +41,7 @@ import {
   NavigationDrawerList,
   NavigationDrawerListItem,
 } from '@/components/app/navigation-drawer';
-import FilePickerButton from '@/components/FilePickerButton.vue';
+import FilePickerButton from '@/components/form-input/FilePickerButton.vue';
 
 interface DrawerListItem {
   to: string;

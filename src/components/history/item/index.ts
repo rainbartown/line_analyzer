@@ -6,7 +6,7 @@ import LineLastEventHistoryItem from './LineLastEventHistoryItem.vue';
 const historyItemComponents = {
   LineChangeGroupNameEventHistoryItem,
   LineFirstEventHistoryItem,
-  LineLastEventHistoryItem
+  LineLastEventHistoryItem,
 } as const;
 
 
@@ -21,4 +21,4 @@ export {
   LineChangeGroupNameEventHistoryItem,
   LineFirstEventHistoryItem,
   LineLastEventHistoryItem,
-}
+};

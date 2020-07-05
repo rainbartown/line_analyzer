@@ -22,8 +22,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import SelectList from '@/components/form-input/SelectList.vue';
 import tableComponents, { TableComponent } from '@/components/tables';
-import SelectList from '@/components/SelectList.vue';
 
 interface SelectListItem {
   readonly text: string;
