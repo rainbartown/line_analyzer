@@ -1,92 +1,114 @@
 <template>
   <v-container class="pa-0 ma-0">
+
+    <!-- 時間単位を選択 -->
     <v-layout wrap>
       <v-flex xs4>
-        <v-select
-          v-model="selectedUnit"
-          item-text="label"
-          item-value="value"
-          :items="units"
+        <select-list
+          v-model="timeUnit"
+          :items="selectListItems"
           label="時間単位"
-          return-object
-        ></v-select>
+        />
       </v-flex>
     </v-layout>
+
+    <!-- 時系列チャート -->
     <v-layout wrap>
       <v-flex xs12>
-        <LineChart :chartData="chartData" :options="options"/>
+        <base-line-chart :chartData="chartData" :options="chartOptions" />
       </v-flex>
     </v-layout>
+
   </v-container>
 </template>
 
-<script>
-import { mapGetters } from 'vuex';
+<script lang="ts">
+import Vue from 'vue';
+import Chart from 'chart.js';
 import Color from 'color';
-import LineChart from '@/components/charts/base/LineChart.vue';
-import { generateTimeSequence } from '@/assets/js/data';
-import { DateTimeUnit } from '@/assets/js/date-time';
+import { generateTimeSequence } from '@/assets/js/common/time-sequence';
+import { TimeUnit, floorTime } from '@/assets/js/common/time-unit';
+import * as group from '@/assets/js/common/group';
+import { LineMessageEvent } from '@/assets/js/line/line-event';
+import SelectList from '@/components/form-input/SelectList.vue';
+import { BaseLineChart } from './base';
 
-/**
- * 時系列データを作成
- */
-const generateTimeSeriesData = (messages, unit) => {
-  // 時系列シーケンスを生成
-  const start = messages[0].datetime;
-  const end = messages[messages.length - 1].datetime;
-  const sequence = generateTimeSequence(start, end, unit);
-  // データを初期化
-  const data = {};
-  sequence.forEach((datetime) => {
-    const time = datetime.getTime();
-    data[time] = { t: datetime, y: 0 };
-  });
-  // カウント
-  messages.forEach((message) => {
-    const time = (new DateTimeUnit(message.datetime, unit)).datetime.getTime();
-    data[time].y += 1;
-  });
-  return Object.values(data);
+const getCountRecords = (events: LineMessageEvent[], unit: TimeUnit):
+  group.CountRecord<number>[] => {
+  const groupMap = group.groupBy(events, (event) => floorTime(event.datetime, unit).getTime());
+
+  const start = events[0].datetime;
+  const end = events[events.length - 1].datetime;
+  const datetimeSequence = generateTimeSequence(start, end, unit);
+  const timeSequence = datetimeSequence.map((datetime) => datetime.getTime());
+  const countRecords = group.getCountRecords(timeSequence, groupMap);
+
+  return countRecords;
 };
 
-export default {
+const transformToChartPoints = (countRecords: group.CountRecord<number>[]): Chart.ChartPoint[] => {
+  const data = countRecords.map(({ key: time, count }) => ({ t: time, y: count }));
+
+  return data;
+};
+
+interface SelectListItem {
+  readonly text: string;
+  readonly value: TimeUnit;
+}
+
+interface Data {
+  timeUnit: TimeUnit;
+  selectListItems: SelectListItem[];
+}
+
+export default Vue.extend({
   name: 'TimeSeriesLineChart',
+
   components: {
-    LineChart,
+    SelectList,
+    BaseLineChart,
   },
-  data() {
-    return {
-      selectedUnit: { label: '月', value: 'month' },
-      units: [
-        { label: '年', value: 'year' },
-        { label: '月', value: 'month' },
-        { label: '日', value: 'day' },
-      ],
-    };
-  },
+
+  data: (): Data => ({
+    timeUnit: 'month',
+
+    selectListItems: [
+      { text: '年', value: 'year' },
+      { text: '月', value: 'month' },
+      { text: '日', value: 'day' },
+    ],
+  }),
+
   computed: {
-    ...mapGetters([
-      'messages',
-    ]),
-    chartData() {
+    lineMessageEvents(): LineMessageEvent[] {
+      return this.$store.getters['line/lineMessageEvents'];
+    },
+
+    chartData(): Chart.ChartData {
+      const unit = this.timeUnit;
+      const countRecords = getCountRecords(this.lineMessageEvents, unit);
+
       return {
         datasets: [{
-          label: '発言回数',
-          data: generateTimeSeriesData(this.messages, this.selectedUnit.value),
+          label: 'メッセージ数',
+          data: transformToChartPoints(countRecords),
           lineTension: 0,
           borderColor: Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string(),
           backgroundColor: Color(this.$vuetify.theme.currentTheme.primary).alpha(0.1).string(),
         }],
       };
     },
-    options() {
+
+    chartOptions(): Chart.ChartOptions {
       return {
         scales: {
           xAxes: [{
             type: 'time',
             time: {
-              unit: this.selectedUnit.value,
+              unit: this.timeUnit,
               displayFormats: {
+                year: 'YYYY',
                 month: 'YYYY/MM',
                 day: 'MM/DD',
               },
@@ -104,5 +126,5 @@ export default {
       };
     },
   },
-};
+});
 </script>

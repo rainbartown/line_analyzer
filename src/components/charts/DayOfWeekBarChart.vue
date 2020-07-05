@@ -1,37 +1,28 @@
 <template>
-  <BarChart :chartData="chartData" :options="options"/>
+  <base-bar-chart :chartData="chartData" :options="chartOptions" />
 </template>
 
-<script>
-import { mapGetters } from 'vuex';
+<script lang="ts">
+import Vue from 'vue';
+import Chart from 'chart.js';
 import Color from 'color';
-import BarChart from '@/components/charts/base/BarChart.vue';
-import { countMessage } from '@/assets/js/data';
+import { LineMessageEvent } from '@/assets/js/line/line-event';
+import { getCountRecords } from '@/components/tables/DayOfWeekTable.vue';
+import { BaseBarChart } from './base';
 
-export default {
+interface Data {
+  chartOptions: Chart.ChartOptions;
+}
+
+export default Vue.extend({
   name: 'DayOfWeekBarChart',
+
   components: {
-    BarChart,
+    BaseBarChart,
   },
-  computed: {
-    ...mapGetters([
-      'messages',
-      'daysOfWeek',
-    ]),
-    chartData() {
-      const counts = Object.entries(countMessage(this.messages, this.daysOfWeek,
-        (message) => this.daysOfWeek[message.datetime.getDay()]))
-        .map(([name, count]) => ({ name, count }));
-      return {
-        labels: counts.map((el) => el.name),
-        datasets: [{
-          label: '発言回数',
-          data: counts.map((el) => el.count),
-          backgroundColor: Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string(),
-        }],
-      };
-    },
-    options: () => ({
+
+  data: (): Data => ({
+    chartOptions: {
       scales: {
         yAxes: [{
           ticks: {
@@ -39,7 +30,29 @@ export default {
           },
         }],
       },
-    }),
+    },
+  }),
+
+  computed: {
+    lineMessageEvents(): LineMessageEvent[] {
+      return this.$store.getters['line/lineMessageEvents'];
+    },
+
+    chartData(): Chart.ChartData {
+      const countRecords = getCountRecords(this.lineMessageEvents);
+      const color = Color(this.$vuetify.theme.currentTheme.primary).darken(0.5).string();
+
+      const chartData: Chart.ChartData = {
+        labels: countRecords.map((record) => record.key),
+        datasets: [{
+          label: 'メッセージ数',
+          data: countRecords.map((record) => record.count),
+          backgroundColor: color,
+        }],
+      };
+
+      return chartData;
+    },
   },
-};
+});
 </script>
