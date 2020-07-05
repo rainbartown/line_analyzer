@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.f51bc77bdeab45264516ede9229eefdd.js"
+  "precache-manifest.41e6827b494440b89c65a7f6c4a0ff1d.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "line_analyzer"});
