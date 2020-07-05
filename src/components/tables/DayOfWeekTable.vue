@@ -1,19 +1,8 @@
 <template>
-  <v-data-table
+  <base-table
     :headers="tableHeaders"
     :items="tableItems"
-    disable-pagination
-    hide-default-footer
-    no-data-text="データがありません"
-    :mobile-breakpoint="0"
-  >
-    <!--
-    <template v-slot:items="props">
-      <td style="text-align: center">{{ props.item.name }}</td>
-      <td style="text-align: right">{{ props.item.count }}</td>
-    </template>
-    -->
-  </v-data-table>
+  />
 </template>
 
 <script lang="ts">
@@ -21,6 +10,7 @@ import Vue from 'vue';
 import * as group from '@/assets/js/common/group';
 import { daysOfWeek } from '@/assets/js/common/time';
 import { LineMessageEvent } from '@/assets/js/line/line-event';
+import BaseTable from './BaseTable.vue';
 
 const getCountRecords = (events: LineMessageEvent[]): group.CountRecord<string>[] => {
   const groupMap = group.groupBy(events, (event) => daysOfWeek[event.datetime.getDay()]);
@@ -31,6 +21,10 @@ const getCountRecords = (events: LineMessageEvent[]): group.CountRecord<string>[
 
 export default Vue.extend({
   name: 'DayOfWeekTable',
+
+  components: {
+    BaseTable,
+  },
 
   data: () => ({
     tableHeaders: [

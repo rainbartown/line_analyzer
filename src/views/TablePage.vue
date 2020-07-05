@@ -1,5 +1,7 @@
 <template>
   <v-container>
+
+    <!-- 表の種類を選択 -->
     <v-layout wrap >
       <v-flex xs4>
         <select-list
@@ -8,29 +10,20 @@
           label="キー"
         />
       </v-flex>
+
+      <!-- 表 -->
       <v-flex xs12>
-        <sender-table v-if="tableComponent === 'SenderTable'" />
-        <hour-table v-else-if="tableComponent === 'HourTable'" />
-        <day-of-week-table v-else-if="tableComponent === 'DayOfWeekTable'" />
+        <component :is="tableComponent" />
       </v-flex>
     </v-layout>
+
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import SenderTable from '@/components/tables/SenderTable.vue';
-import HourTable from '@/components/tables/HourTable.vue';
-import DayOfWeekTable from '@/components/tables/DayOfWeekTable.vue';
+import tableComponents, { TableComponent } from '@/components/tables';
 import SelectList from '@/components/SelectList.vue';
-
-const tableComponents = {
-  SenderTable,
-  HourTable,
-  DayOfWeekTable,
-} as const;
-
-type TableComponent = keyof typeof tableComponents;
 
 interface SelectListItem {
   readonly text: string;

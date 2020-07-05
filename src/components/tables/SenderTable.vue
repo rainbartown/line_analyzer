@@ -1,22 +1,17 @@
 <template>
-  <div>
-    <v-data-table
-      :headers="tableHeaders"
-      :items="tableItems"
-      sort-by="count"
-      sort-desc
-      disable-pagination
-      hide-default-footer
-      no-data-text="データがありません"
-      :mobile-breakpoint="0"
-    ></v-data-table>
-  </div>
+  <base-table
+    :headers="tableHeaders"
+    :items="tableItems"
+    sort-by="count"
+    sort-desc
+  />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import * as group from '@/assets/js/common/group';
 import { LineMessageEvent } from '@/assets/js/line/line-event';
+import BaseTable from './BaseTable.vue';
 
 const getCountRecords = (events: LineMessageEvent[], members: Set<string>):
   group.CountRecord<string>[] => {
@@ -28,6 +23,10 @@ const getCountRecords = (events: LineMessageEvent[], members: Set<string>):
 
 export default Vue.extend({
   name: 'SenderTable',
+
+  components: {
+    BaseTable,
+  },
 
   data: () => ({
     tableHeaders: [
