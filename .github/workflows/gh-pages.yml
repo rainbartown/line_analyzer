@@ -16,8 +16,11 @@ jobs:
       with:
         node-version: '12'
 
-    - name: Install npmm modules
+    - name: Install npm modules
       run: npm install
+
+    - name: Run lint
+      run: npm run lint
 
     - name: Run unit test
       run: npm run test:unit
