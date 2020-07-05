@@ -1,5 +1,7 @@
 <template>
   <v-container>
+
+    <!-- チャートの種類を選択 -->
     <v-layout wrap >
       <v-flex xs4>
         <select-list
@@ -9,33 +11,21 @@
         />
       </v-flex>
     </v-layout>
+
+    <!-- チャート -->
     <v-layout wrap>
       <v-flex xs12>
-        <sender-pie-chart v-if="chartComponent === 'SenderPieChart'" />
-        <hour-bar-chart v-if="chartComponent === 'HourBarChart'" />
-        <day-of-week-bar-chart v-if="chartComponent === 'DayOfWeekBarChart'" />
-        <time-series-line-chart v-if="chartComponent === 'TimeSeriesLineChart'" />
+        <component :is="chartComponent" />
       </v-flex>
     </v-layout>
+
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import SenderPieChart from '@/components/charts/SenderPieChart.vue';
-import HourBarChart from '@/components/charts/HourBarChart.vue';
-import DayOfWeekBarChart from '@/components/charts/DayOfWeekBarChart.vue';
-import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart.vue';
+import chartComponents, { ChartComponent } from '@/components/charts';
 import SelectList from '@/components/SelectList.vue';
-
-const chartComponents = {
-  SenderPieChart,
-  HourBarChart,
-  DayOfWeekBarChart,
-  TimeSeriesLineChart,
-} as const;
-
-type ChartComponent = keyof typeof chartComponents;
 
 interface SelectListItem {
   readonly text: string;

@@ -1,5 +1,5 @@
 <template>
-  <bar-chart :chartData="chartData" :options="chartOptions" />
+  <base-bar-chart :chartData="chartData" :options="chartOptions" />
 </template>
 
 <script lang="ts">
@@ -7,17 +7,21 @@ import Vue from 'vue';
 import Chart from 'chart.js';
 import Color from 'color';
 import { LineMessageEvent } from '@/assets/js/line/line-event';
-import BarChart from '@/components/charts/base/BarChart.vue';
 import { getCountRecords } from '@/components/tables/DayOfWeekTable.vue';
+import { BaseBarChart } from './base';
+
+interface Data {
+  chartOptions: Chart.ChartOptions;
+}
 
 export default Vue.extend({
   name: 'DayOfWeekBarChart',
 
   components: {
-    BarChart,
+    BaseBarChart,
   },
 
-  data: () => ({
+  data: (): Data => ({
     chartOptions: {
       scales: {
         yAxes: [{
@@ -26,7 +30,7 @@ export default Vue.extend({
           },
         }],
       },
-    } as Chart.ChartOptions,
+    },
   }),
 
   computed: {

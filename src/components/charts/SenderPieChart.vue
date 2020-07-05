@@ -1,5 +1,5 @@
 <template>
-  <pie-chart :chartData="chartData" />
+  <base-pie-chart :chartData="chartData" />
 </template>
 
 <script lang="ts">
@@ -7,14 +7,14 @@ import Vue from 'vue';
 import Chart from 'chart.js';
 import { getPieChartCountRecords, getPieChartColors } from '@/assets/js/line/chart/pie-chart';
 import { LineMessageEvent } from '@/assets/js/line/line-event';
-import PieChart from '@/components/charts/base/PieChart.vue';
 import { getCountRecords } from '@/components/tables/SenderTable.vue';
+import { BasePieChart } from './base';
 
 export default Vue.extend({
   name: 'SenderPieChart',
 
   components: {
-    PieChart,
+    BasePieChart,
   },
 
   computed: {

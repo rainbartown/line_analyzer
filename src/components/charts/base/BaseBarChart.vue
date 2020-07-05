@@ -6,7 +6,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 const { reactiveProp } = mixins;
 
 export default Vue.extend({
-  name: 'BarChart',
+  name: 'BaseBarChart',
 
   extends: Bar,
 

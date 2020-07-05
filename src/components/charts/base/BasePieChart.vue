@@ -4,7 +4,7 @@ import { Pie, mixins } from 'vue-chartjs';
 import { ChartData, ChartOptions } from 'chart.js';
 
 export default Vue.extend({
-  name: 'PieChart',
+  name: 'BasePieChart',
 
   extends: Pie,
 

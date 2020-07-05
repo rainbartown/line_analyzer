@@ -4,7 +4,7 @@ import { Line, mixins } from 'vue-chartjs';
 import { ChartData, ChartOptions } from 'chart.js';
 
 export default Vue.extend({
-  name: 'LineChart',
+  name: 'BaseLineChart',
 
   extends: Line,
 

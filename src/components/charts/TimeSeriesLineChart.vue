@@ -1,5 +1,7 @@
 <template>
   <v-container class="pa-0 ma-0">
+
+    <!-- 時間単位を選択 -->
     <v-layout wrap>
       <v-flex xs4>
         <select-list
@@ -9,11 +11,14 @@
         />
       </v-flex>
     </v-layout>
+
+    <!-- 時系列チャート -->
     <v-layout wrap>
       <v-flex xs12>
-        <line-chart :chartData="chartData" :options="chartOptions" />
+        <base-line-chart :chartData="chartData" :options="chartOptions" />
       </v-flex>
     </v-layout>
+
   </v-container>
 </template>
 
@@ -25,13 +30,8 @@ import { generateTimeSequence } from '@/assets/js/common/time-sequence';
 import { TimeUnit, floorTime } from '@/assets/js/common/time-unit';
 import * as group from '@/assets/js/common/group';
 import { LineMessageEvent } from '@/assets/js/line/line-event';
-import LineChart from '@/components/charts/base/LineChart.vue';
 import SelectList from '@/components/SelectList.vue';
-
-interface SelectListItem {
-  readonly text: string;
-  readonly value: TimeUnit;
-}
+import { BaseLineChart } from './base';
 
 const getCountRecords = (events: LineMessageEvent[], unit: TimeUnit):
   group.CountRecord<number>[] => {
@@ -52,6 +52,11 @@ const transformToChartPoints = (countRecords: group.CountRecord<number>[]): Char
   return data;
 };
 
+interface SelectListItem {
+  readonly text: string;
+  readonly value: TimeUnit;
+}
+
 interface Data {
   timeUnit: TimeUnit;
   selectListItems: SelectListItem[];
@@ -62,7 +67,7 @@ export default Vue.extend({
 
   components: {
     SelectList,
-    LineChart,
+    BaseLineChart,
   },
 
   data: (): Data => ({
