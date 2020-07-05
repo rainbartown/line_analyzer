@@ -1,37 +1,42 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="items"
-    disable-pagination
-    hide-default-footer
-    no-data-text="データがありません"
-    :mobile-breakpoint=0
-  >
-    <template v-slot:items="props">
-      <td style="text-align: center">{{ props.item.name }}</td>
-      <td style="text-align: right">{{ props.item.count }}</td>
-    </template>
-  </v-data-table>
+  <base-table
+    :headers="tableHeaders"
+    :items="tableItems"
+  />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
-import { countMessage } from '@/assets/js/data';
+import * as group from '@/assets/js/common/group';
+import { daysOfWeek } from '@/assets/js/common/time';
+import { LineMessageEvent } from '@/assets/js/line/line-event';
+import BaseTable from './BaseTable.vue';
+
+const getCountRecords = (events: LineMessageEvent[]): group.CountRecord<string>[] => {
+  const groupMap = group.groupBy(events, (event) => daysOfWeek[event.datetime.getDay()]);
+  const countRecords = group.getCountRecords(daysOfWeek, groupMap);
+
+  return countRecords;
+};
 
 export default Vue.extend({
   name: 'DayOfWeekTable',
+
+  components: {
+    BaseTable,
+  },
+
   data: () => ({
-    headers: [
+    tableHeaders: [
       {
         text: '曜日',
-        value: 'name',
+        value: 'key',
         sortable: false,
         align: 'center',
         class: 'grey lighten-2',
       },
       {
-        text: '発言回数',
+        text: 'メッセージ数',
         value: 'count',
         sortable: true,
         align: 'center',
@@ -39,19 +44,21 @@ export default Vue.extend({
       },
     ],
   }),
+
   computed: {
-    ...mapGetters([
-      'messages',
-      'daysOfWeek',
-    ]),
-    items() {
-      let counts = {};
-      if (this.messages.length) {
-        counts = countMessage(this.messages, this.daysOfWeek,
-          (message) => this.daysOfWeek[message.datetime.getDay()]);
-      }
-      return Object.entries(counts).map(([dayOfWeek, count]) => ({ name: dayOfWeek, count }));
+    lineMessageEvents(): LineMessageEvent[] {
+      return this.$store.getters['line/lineMessageEvents'];
+    },
+
+    tableItems(): group.CountRecord<string>[] {
+      const countRecords = getCountRecords(this.lineMessageEvents);
+
+      return countRecords;
     },
   },
 });
+
+export {
+  getCountRecords,
+};
 </script>

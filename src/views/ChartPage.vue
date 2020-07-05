@@ -1,57 +1,61 @@
 <template>
   <v-container>
+
+    <!-- チャートの種類を選択 -->
     <v-layout wrap >
       <v-flex xs4>
-        <v-select
-          v-model="selectedKey"
-          item-text="label"
-          item-value="value"
-          :items="keys"
+        <select-list
+          v-model="chartComponent"
+          :items="selectListItems"
           label="キー"
-          return-object
-        ></v-select>
+        />
       </v-flex>
     </v-layout>
+
+    <!-- チャート -->
     <v-layout wrap>
       <v-flex xs12>
-        <SpeakerPieChart v-if="selectedKey.value === 'speaker'"/>
-        <HourBarChart v-if="selectedKey.value === 'hour'"/>
-        <DayOfWeekBarChart v-if="selectedKey.value === 'dayOfWeek'"/>
-        <TimeSeriesLineChart v-if="selectedKey.value === 'timeSeries'"/>
+        <component :is="chartComponent" />
       </v-flex>
     </v-layout>
+
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
-import SpeakerPieChart from '@/components/charts/SpeakerPieChart.vue';
-import HourBarChart from '@/components/charts/HourBarChart.vue';
-import DayOfWeekBarChart from '@/components/charts/DayOfWeekBarChart.vue';
-import TimeSeriesLineChart from '@/components/charts/TimeSeriesLineChart.vue';
+import chartComponents, { ChartComponent } from '@/components/charts';
+import SelectList from '@/components/form-input/SelectList.vue';
+
+interface SelectListItem {
+  readonly text: string;
+  readonly value: ChartComponent;
+}
+
+interface Data {
+  readonly chartComponent: ChartComponent;
+  readonly selectListItems: SelectListItem[];
+}
 
 export default Vue.extend({
   name: 'ChartPage',
+
   components: {
-    SpeakerPieChart,
-    HourBarChart,
-    DayOfWeekBarChart,
-    TimeSeriesLineChart,
+    SelectList,
+    ...chartComponents,
   },
-  data: () => ({
-    selectedKey: { label: '発言者', value: 'speaker' },
-    keys: [
-      { label: '発言者', value: 'speaker' },
-      { label: '時間帯', value: 'hour' },
-      { label: '曜日', value: 'dayOfWeek' },
-      { label: '時系列', value: 'timeSeries' },
-    ],
-  }),
-  computed: {
-    ...mapGetters([
-      'messages',
-    ]),
+
+  data(): Data {
+    return {
+      chartComponent: 'SenderPieChart',
+
+      selectListItems: [
+        { text: '送信者', value: 'SenderPieChart' },
+        { text: '時間帯', value: 'HourBarChart' },
+        { text: '曜日', value: 'DayOfWeekBarChart' },
+        { text: '時系列', value: 'TimeSeriesLineChart' },
+      ],
+    };
   },
 });
 </script>

@@ -19,6 +19,9 @@ jobs:
     - name: Install npmm modules
       run: npm install
 
+    - name: Run unit test
+      run: npm run test:unit
+
     - name: Build project
       run: npm run build
 

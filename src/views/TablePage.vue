@@ -1,45 +1,58 @@
 <template>
   <v-container>
+
+    <!-- 表の種類を選択 -->
     <v-layout wrap >
       <v-flex xs4>
-        <v-select
-          v-model="selectedKey"
-          item-text="label"
-          item-value="value"
-          :items="keys"
+        <select-list
+          v-model="tableComponent"
+          :items="selectListItems"
           label="キー"
-          return-object
-        ></v-select>
+        />
       </v-flex>
+
+      <!-- 表 -->
       <v-flex xs12>
-        <SpeakerTable v-if="selectedKey.value === 'speaker'"/>
-        <HourTable v-else-if="selectedKey.value === 'hour'"/>
-        <dayOfWeekTable v-else-if="selectedKey.value === 'dayOfWeek'"/>
+        <component :is="tableComponent" />
       </v-flex>
     </v-layout>
+
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import SpeakerTable from '@/components/tables/SpeakerTable.vue';
-import HourTable from '@/components/tables/HourTable.vue';
-import dayOfWeekTable from '@/components/tables/DayOfWeekTable.vue';
+import SelectList from '@/components/form-input/SelectList.vue';
+import tableComponents, { TableComponent } from '@/components/tables';
+
+interface SelectListItem {
+  readonly text: string;
+  readonly value: TableComponent;
+}
+
+interface Data {
+  readonly tableComponent: TableComponent;
+  readonly selectListItems: SelectListItem[];
+}
 
 export default Vue.extend({
   name: 'TablePage',
+
   components: {
-    SpeakerTable,
-    HourTable,
-    dayOfWeekTable,
+    SelectList,
+    ...tableComponents,
   },
-  data: () => ({
-    selectedKey: { label: '発言者', value: 'speaker' },
-    keys: [
-      { label: '発言者', value: 'speaker' },
-      { label: '時間帯', value: 'hour' },
-      { label: '曜日', value: 'dayOfWeek' },
-    ],
-  }),
+
+  data(): Data {
+    return {
+      tableComponent: 'SenderTable',
+
+      selectListItems: [
+        { text: '送信者', value: 'SenderTable' },
+        { text: '時間帯', value: 'HourTable' },
+        { text: '曜日', value: 'DayOfWeekTable' },
+      ],
+    };
+  },
 });
 </script>
